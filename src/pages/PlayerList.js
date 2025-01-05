@@ -1,6 +1,8 @@
 import React, { useEffect, useRef } from 'react';
-import { Tabulator } from 'tabulator-tables';
+import { Tabulator, EditModule } from 'tabulator-tables';
 import 'tabulator-tables/dist/css/tabulator_bootstrap4.min.css';
+
+Tabulator.registerModule([EditModule]);
 
 const PlayerList = () => {
   const tableRef = useRef(null);
@@ -15,8 +17,7 @@ const PlayerList = () => {
           columns: [
             { title: 'Name', 
               field: 'Name', 
-              editor: 'input', 
-              editable: true,
+              editor: 'input',
               editorParams:{ selectContents:true}
             },
             { 
@@ -26,14 +27,12 @@ const PlayerList = () => {
             { 
               title: '🏏', 
               field: 'Bat' ,
-              editable: true,
               editor: 'number', 
               editorParams:{ selectContents:true}
             },
             { 
               title: '◐', 
               field: 'Bowl',
-              editable: true, 
               editor:'number', 
               editorParams:{selectContents:true}
             },
