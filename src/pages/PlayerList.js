@@ -13,10 +13,16 @@ const PlayerList = () => {
           layout:'fitColumns',
           data: tabledata,
           columns: [
-            { title: 'Name', field: 'Name' },
+            { title: 'Name', field: 'Name', editor:'input', editorParams:{
+              selectContents:true
+            }},
             { title: 'Attributes', field: 'Attributes' },
-            { title: 'Bat', field: 'Bat' },
-            { title: 'Bowl', field: 'Bowl' },
+            { title: '🏏', field: '◐' , editor:'number', editorParams:{
+              selectContents:true
+            }},
+            { title: 'Bowl', field: 'Bowl', editor:'number', editorParams:{
+              selectContents:true
+            }},
           ],
         });
         return () => table.destroy();
