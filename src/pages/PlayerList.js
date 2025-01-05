@@ -13,16 +13,30 @@ const PlayerList = () => {
           layout:'fitColumns',
           data: tabledata,
           columns: [
-            { title: 'Name', field: 'Name', editor:'input', editorParams:{
-              selectContents:true
-            }},
-            { title: 'Attributes', field: 'Attributes' },
-            { title: '🏏', field: 'Bat' , editor:'number', editorParams:{
-              selectContents:true
-            }},
-            { title: '◐', field: 'Bowl', editor:'number', editorParams:{
-              selectContents:true
-            }},
+            { title: 'Name', 
+              field: 'Name', 
+              editor: 'input', 
+              editable: true,
+              editorParams:{ selectContents:true}
+            },
+            { 
+              title: 'Attributes', 
+              field: 'Attributes' 
+            },
+            { 
+              title: '🏏', 
+              field: 'Bat' ,
+              editable: true,
+              editor: 'number', 
+              editorParams:{ selectContents:true}
+            },
+            { 
+              title: '◐', 
+              field: 'Bowl',
+              editable: true, 
+              editor:'number', 
+              editorParams:{selectContents:true}
+            },
           ],
         });
         return () => table.destroy();
