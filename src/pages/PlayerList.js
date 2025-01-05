@@ -17,10 +17,10 @@ const PlayerList = () => {
               selectContents:true
             }},
             { title: 'Attributes', field: 'Attributes' },
-            { title: '🏏', field: '◐' , editor:'number', editorParams:{
+            { title: '🏏', field: 'Bat' , editor:'number', editorParams:{
               selectContents:true
             }},
-            { title: 'Bowl', field: 'Bowl', editor:'number', editorParams:{
+            { title: '◐', field: 'Bowl', editor:'number', editorParams:{
               selectContents:true
             }},
           ],
