@@ -33,10 +33,7 @@ const PlayerList = () => {
               editorParams:{ selectContents:true},
               widthGrow: 1
             },
-            { 
-              title: 'Attributes', 
-              field: 'Attributes' 
-            },
+            colDef('Attributes'),
             { 
               title: '🏏', 
               field: 'Bat' ,
