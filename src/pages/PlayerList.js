@@ -45,6 +45,7 @@ const PlayerList = () => {
           const updatedField = cell.getField();
           const updatedValue = cell.getValue();
           console.log(cell.editorParams);
+          console.log(cell.editor);
           fetch(`${apiUrl}/players/${updatedData.Id}/${updatedField}`, {
             method: 'PUT',
             //headers: {'Content-Type': 'application/json'},
