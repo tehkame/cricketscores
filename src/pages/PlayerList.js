@@ -44,17 +44,12 @@ const PlayerList = () => {
           const updatedData = cell.getData();
           const updatedField = cell.getField();
           const updatedValue = cell.getValue();
-          fetch(`${apiUrl}/players/${updatedData.Id}`, {
+          fetch(`${apiUrl}/players/${updatedData.Id}/${updatedField}`, {
             method: 'PUT',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              field: updatedField,
-              value: updatedValue
-            })
+            //headers: {'Content-Type': 'application/json'},
+            body: updatedValue
           })
-          .then(response => response.json())
+          .then(response => response.text())
           .then(data => {
             console.log('Data updated successfully', data);
           })
