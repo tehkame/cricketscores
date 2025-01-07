@@ -24,13 +24,31 @@ const PlayerList = () => {
       .then((response) => response.json())
       .then((tabledata) => {
         const table = new Tabulator(tableRef.current, {
-          layout:'fitData',
+          layout:'fitColumns',
           data: tabledata,
           columns: [
-            colDef('Name', 'input', 'Name', 1),
-            colDef('Attributes'),
-            colDef('Bat','number','🏏'),
-            colDef('Bowl','number','◐'),
+            { title: 'Name', 
+              field: 'Name', 
+              editor: 'input',
+              editorParams:{ selectContents:true},
+              widthGrow: 1
+            },
+            { 
+              title: 'Attributes', 
+              field: 'Attributes' 
+            },
+            { 
+              title: '🏏', 
+              field: 'Bat' ,
+              editor: 'number', 
+              editorParams:{ selectContents:true}
+            },
+            { 
+              title: '◐', 
+              field: 'Bowl',
+              editor:'number', 
+              editorParams:{selectContents:true}
+            },
           ],
         });
         table.on("cellEdited", function(cell){
