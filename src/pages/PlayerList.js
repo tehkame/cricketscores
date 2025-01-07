@@ -10,7 +10,7 @@ const PlayerList = () => {
   const tableRef = useRef(null);
 
   useEffect(() => {
-    fetch(`${apiUrl}/playerlist`)
+    fetch(`${apiUrl}/views/playerlist`)
       .then((response) => response.json())
       .then((tabledata) => {
         const table = new Tabulator(tableRef.current, {
