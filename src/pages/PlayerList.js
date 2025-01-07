@@ -41,15 +41,14 @@ const PlayerList = () => {
           ],
         });
         table.on("cellEdited", function(cell){
-          const updatedData = cell.getData();
-          const updatedField = cell.getField();
-          const updatedValue = cell.getValue();
-          console.log(cell.editorParams);
-          console.log(cell.editor);
-          fetch(`${apiUrl}/players/${updatedData.Id}/${updatedField}`, {
+
+          const isNumeric = cell.getColumn().getDefinition().editor == 'number';
+          var value = cell.getValue();
+          if (!isNumeric) value = `'${value}'`;
+          fetch(`${apiUrl}/players/${cell.getData().Id}/${cell.getField()}`, {
             method: 'PUT',
             //headers: {'Content-Type': 'application/json'},
-            body: updatedValue
+            body: value
           })
           .then(response => response.text())
           .then(data => {
