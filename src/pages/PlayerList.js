@@ -6,13 +6,7 @@ Tabulator.registerModule([EditModule]);
 
 const apiUrl = 'https://csapi-b6cvdxergbf9h5e7.australiasoutheast-01.azurewebsites.net';
 
-const attributeList = [
-  ["Opener","Op"],
-  ["Spin","Op"],
-  ["Wicket Keeper","Op"],
-  ["Pace","Pc"],
-  ["Captain","Cp"],
-]
+
 
 function colDef(field, editor, title, widthGrow) {
   return { 
