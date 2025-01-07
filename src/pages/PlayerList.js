@@ -6,6 +6,14 @@ Tabulator.registerModule([EditModule]);
 
 const apiUrl = 'https://csapi-b6cvdxergbf9h5e7.australiasoutheast-01.azurewebsites.net';
 
+const attributeList = [
+  ["Opener","Op"],
+  ["Spin","Op"],
+  ["Wicket Keeper","Op"],
+  ["Pace","Pc"],
+  ["Captain","Cp"],
+]
+
 function colDef(field, editor, title, widthGrow) {
   return { 
     title: title || field, 
@@ -24,7 +32,7 @@ const PlayerList = () => {
       .then((response) => response.json())
       .then((tabledata) => {
         const table = new Tabulator(tableRef.current, {
-          layout:'fitColumns',
+          layout:'fitDataFill',
           data: tabledata,
           columns: [
             { title: 'Name', 
@@ -55,6 +63,9 @@ const PlayerList = () => {
           fetch(`${apiUrl}/players/${cell.getData().Id}/${cell.getField()}`, {method: 'PUT',body: value})
             .then(data => console.log('Data updated successfully', data))
             .catch((error) => console.error('Error updating data', error));
+        });
+        table.on("cellEditing", function(cell){
+          console.log(cell.getValue());
         });
         return () => table.destroy();
       });
