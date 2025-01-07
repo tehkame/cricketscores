@@ -6,6 +6,15 @@ Tabulator.registerModule([EditModule]);
 
 const apiUrl = 'https://csapi-b6cvdxergbf9h5e7.australiasoutheast-01.azurewebsites.net';
 
+function colDef(field, editor, title) {
+  return { 
+    title: title || field, 
+    field: field, 
+    editor: editor,
+    editorParams: editor ? { selectContents:true} : null
+  }
+}
+
 const PlayerList = () => {
   const tableRef = useRef(null);
 
@@ -17,48 +26,20 @@ const PlayerList = () => {
           layout:'fitData',
           data: tabledata,
           columns: [
-            { title: 'Name', 
-              field: 'Name', 
-              editor: 'input',
-              editorParams:{ selectContents:true}
-            },
-            { 
-              title: 'Attributes', 
-              field: 'Attributes' 
-            },
-            { 
-              title: '🏏', 
-              field: 'Bat' ,
-              editor: 'number', 
-              editorParams:{ selectContents:true}
-            },
-            { 
-              title: '◐', 
-              field: 'Bowl',
-              editor:'number', 
-              editorParams:{selectContents:true}
-            },
+            colDef('Name', 'input'),
+            colDef('Attributes'),
+            colDef('Bat','number','🏏'),
+            colDef('Bowl','number','◐'),
           ],
         });
         table.on("cellEdited", function(cell){
-
           const isNumeric = cell.getColumn().getDefinition().editor == 'number';
           var value = cell.getValue();
           if (!isNumeric) value = `'${value}'`;
-          fetch(`${apiUrl}/players/${cell.getData().Id}/${cell.getField()}`, {
-            method: 'PUT',
-            //headers: {'Content-Type': 'application/json'},
-            body: value
-          })
-          .then(response => response.text())
-          .then(data => {
-            console.log('Data updated successfully', data);
-          })
-          .catch((error) => {
-            console.error('Error updating data', error);
-          });
-        }
-        );
+          fetch(`${apiUrl}/players/${cell.getData().Id}/${cell.getField()}`, {method: 'PUT',body: value})
+            .then(data => console.log('Data updated successfully', data))
+            .catch((error) => console.error('Error updating data', error));
+        });
         return () => table.destroy();
       });
     }, []);  
