@@ -17,7 +17,7 @@ const attributeList = {
 
 const PlayerList = () => {
   const tableRef = useRef(null);
-
+  const tabulatorRef = useRef(null);
   useEffect(() => {
     fetch(`${apiUrl}/views/playerlist`)
       .then((response) => response.json())
@@ -68,6 +68,7 @@ const PlayerList = () => {
             .then(data => console.log('Data updated successfully', data))
             .catch((error) => console.error('Error updating data', error));
         });
+        tabulatorRef.current = table;
         return () => table.destroy();
       });
     }, []);  
@@ -82,8 +83,8 @@ const PlayerList = () => {
       };
   
       // Add the new record to the table using Tabulator API
-      if (tableRef.current) {
-        tableRef.current.addData([newRecord]);
+      if (tabulatorRef.current) {
+        tabulatorRef.current.addData([newRecord]);
       }
     };
 
