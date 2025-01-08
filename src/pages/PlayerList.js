@@ -22,7 +22,7 @@ const PlayerList = () => {
       .then((response) => response.json())
       .then((tabledata) => {
         const table = new Tabulator(tableRef.current, {
-          layout:'fitDataStretch',
+          layout:'fitColumns',
           data: tabledata,
           columns: [
             { 
