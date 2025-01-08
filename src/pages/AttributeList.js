@@ -1,23 +1,18 @@
 import React, { useState } from "react";
 
 const AttributeList = ({ selectedIndices, playerId }) => {
-  const [checkedIndices, setCheckedIndices] = useState(new Set(selectedIndices));
-
   const handleToggle = (index) => {
-    const newCheckedIndices = new Set(checkedIndices);
-    if (newCheckedIndices.has(index)) {
-      newCheckedIndices.delete(index);
-    } else {
-      newCheckedIndices.add(index);
-    }
-    setCheckedIndices(newCheckedIndices);
-    //onChange([...newCheckedIndices], personId); // Pass updated indices and personId
-    console.log(`Player ${playerId}`);
-    console.log(checkedIndices);
+
   };
 
   // Example list of items
-  const items = ["Option 1", "Option 2", "Option 3", "Option 4"];
+  const items = [
+    ["Opener","Op"],
+    ["Spin","Sp"],
+    ["Wicket Keeper","WK"],
+    ["Pace","Pc"],
+    ["Captain","Cp"],
+  ]
 
   return (
     <div>
@@ -26,10 +21,10 @@ const AttributeList = ({ selectedIndices, playerId }) => {
           <li key={index}>
             <input
               type="checkbox"
-              checked={checkedIndices.has(index)}
+              checked={selectedIndices.has(index)}
               onChange={() => handleToggle(index)}
             />
-            {item}
+            {item[0]}
           </li>
         ))}
       </ul>
