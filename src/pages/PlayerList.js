@@ -74,16 +74,11 @@ const PlayerList = () => {
     }, []);  
 
     const addRecord = () => {
-      // Example of new data you want to add
-      const newRecord = {
-        Name: 'New Value 1',
-        Bat: 1,
-        Bowl: 1,
-      };
-  
-      // Add the new record to the table using Tabulator API
       if (tabulatorRef.current) {
-        tabulatorRef.current.addData([newRecord], true);
+        tabulatorRef.current.addData([{Name: 'New Value 1',Bat: 1, Bowl: 1}], true).then(function(rows){
+          fetch(`${apiUrl}/new/players`)
+          .then(data => rows[0].update({"Id":data}))
+      });
       }
     };
 
