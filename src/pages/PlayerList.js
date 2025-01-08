@@ -41,7 +41,7 @@ const PlayerList = () => {
                 if (value===null) return "+";
                 return cell.getValue().split(",").map(num=>attributeList[num][1]).join("/");
               },
-              width: 80
+              width: 100
             },
             { 
               title: '🏏', 
