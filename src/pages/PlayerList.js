@@ -1,5 +1,4 @@
 import React, { useEffect, useRef } from 'react';
-import ReactDOM from 'react-dom';
 import { Tabulator, EditModule, FormatModule, PopupModule } from 'tabulator-tables';
 import AttributeList from "./AttributeList";
 import 'tabulator-tables/dist/css/tabulator_bootstrap4.min.css';
@@ -36,16 +35,9 @@ const PlayerList = () => {
               },
               clickPopup:function(e, cell, onRendered){
                 const player =  cell.getRow().getData();
-                const container = document.createElement("div");
                 console.log(player);
                 onRendered(() => {
-                  ReactDOM.render(
-                    <AttributeList
-                      selectedIndices={player.Attributes ? player.Attributes.split(",") : null}
-                      playerId={player.Id}
-                    />,
-                    container
-                  );
+                  return <AttributeList selectedIndices={player.Attributes ? player.Attributes.split(",") : null} playerId={player.Id}/>;
                 });
                 return container;
             }
