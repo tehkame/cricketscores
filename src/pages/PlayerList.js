@@ -26,38 +26,15 @@ const PlayerList = () => {
           layout:'fitColumns',
           data: tabledata,
           columns: [
-            { 
-              title: 'Name', 
-              field: 'Name', 
-              editor: 'input',
-              editorParams:{ selectContents:true},
-              minWidth: 200,
-              widthGrow: 1
-            },
-            { 
-              title: '', 
-              field: 'Attributes',
-              formatter: function(cell, formatterParams, onRendered){
+            { title: 'Name', field: 'Name',  editor: 'input', editorParams:{ selectContents:true}, minWidth: 200, widthGrow: 1},
+            { title: '', field: 'Attributes', width: 60, formatter: function(cell, formatterParams, onRendered){
                 const value = cell.getValue();
                 if (!value) return "+";
                 return value.split(",").map(num=>attributeList[num][1]).join("/");
-              },
-              width: 60
+              }
             },
-            { 
-              title: '🏏', 
-              field: 'Bat' ,
-              editor: 'number', 
-              editorParams:{ selectContents:true},
-              width: 10
-            },
-            { 
-              title: '◐', 
-              field: 'Bowl',
-              editor:'number', 
-              editorParams:{selectContents:true},
-              width: 10
-            }
+            { title: '🏏', field: 'Bat', editor: 'number', editorParams:{ selectContents:true}, width: 10 },
+            { title: '◐', field: 'Bowl', editor:'number', editorParams:{selectContents:true}, width: 10 }
           ],
         });
         table.on("cellEdited", function(cell){
@@ -65,7 +42,6 @@ const PlayerList = () => {
           var value = cell.getValue();
           if (!isNumeric) value = `'${value}'`;
           fetch(`${apiUrl}/players/${cell.getData().Id}/${cell.getField()}`, {method: 'PUT',body: value})
-            .then(data => console.log('Data updated successfully', data))
             .catch((error) => console.error('Error updating data', error));
         });
         tabulatorRef.current = table;
@@ -77,13 +53,15 @@ const PlayerList = () => {
       if (tabulatorRef.current) {
         tabulatorRef.current.addData([{Name: 'New Value 1',Bat: 1, Bowl: 1}], true).then(function(rows){
           fetch(`${apiUrl}/new/players`)
+          .then((response) => response.text())
           .then(data => rows[0].update({"Id":data}))
+          .catch((error) => console.error('Error adding new record', error));
       });
       }
     };
 
   return  <div className="container-fluid bg-light min-vh-100 d-flex flex-column align-items-center pt-4">
-            <button onClick={addRecord} class="btn btn-primary mb-3">Add Record</button>
+            <button onClick={addRecord} class="btn btn-primary mb-3">New Player</button>
             <div ref={tableRef}></div>
           </div>
 };
