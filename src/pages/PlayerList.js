@@ -37,7 +37,7 @@ const PlayerList = () => {
               clickPopup:function(e, cell, onRendered){
                 const player =  cell.getRow().getData();
                 const container = document.createElement('div');
-                ReactDOM.render(<AttributeList selectedIndices={player.Attributes ? player.Attributes.split(",") : null} playerId={player.Id}/>, container);
+                ReactDOM.createRoot(container).render(<AttributeList selectedIndices={player.Attributes ? player.Attributes.split(",") : null} playerId={player.Id}/>);
                 return container;
             }
             },
