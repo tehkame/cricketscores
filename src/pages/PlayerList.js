@@ -31,7 +31,12 @@ const PlayerList = () => {
                 const value = cell.getValue();
                 if (!value) return "+";
                 return value.split(",").map(num=>attributeList[num][1]).join("/");
-              }
+              },
+              clickPopup:function(e, component, onRendered){
+                console.log(e);
+                console.log(component);
+                return "Hey Im a Popup!";
+            }
             },
             { title: '🏏', field: 'Bat', editor: 'number', editorParams:{ selectContents:true}, width: 10 },
             { title: '◐', field: 'Bowl', editor:'number', editorParams:{selectContents:true}, width: 10 }
