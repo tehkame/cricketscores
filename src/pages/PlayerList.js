@@ -44,7 +44,7 @@ const PlayerList = () => {
               formatter: function(cell, formatterParams){
                 const numbers = cell.getValue().split(",");
                 const mappedValues = numbers.map(num => {
-                    return lookup[num][1];
+                    return attributeList[num][1];
                 });
                 return mappedValues.join("/");
               }
