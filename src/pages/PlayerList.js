@@ -77,7 +77,6 @@ const PlayerList = () => {
       // Example of new data you want to add
       const newRecord = {
         Name: 'New Value 1',
-        Attributes: '+',
         Bat: 1,
         Bowl: 1,
       };
