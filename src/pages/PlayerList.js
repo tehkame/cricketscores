@@ -37,6 +37,8 @@ const PlayerList = () => {
               title: '', 
               field: 'Attributes',
               formatter: function(cell, formatterParams, onRendered){
+                const value = cell.getValue();
+                if (value===null) return "+";
                 return cell.getValue().split(",").map(num=>attributeList[num][1]).join("/");
               },
               width: 30
