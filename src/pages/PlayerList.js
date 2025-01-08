@@ -6,18 +6,6 @@ Tabulator.registerModule([EditModule]);
 
 const apiUrl = 'https://csapi-b6cvdxergbf9h5e7.australiasoutheast-01.azurewebsites.net';
 
-
-
-function colDef(field, editor, title, widthGrow) {
-  return { 
-    title: title || field, 
-    field: field, 
-    editor: editor,
-    editorParams: editor ? { selectContents:true} : null,
-    widthGrow: widthGrow
-  }
-}
-
 const attributeList = {
   1: ["Opener","Op"],
   2: ["Spin","Sp"],
