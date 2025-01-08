@@ -41,12 +41,8 @@ const PlayerList = () => {
             { 
               title: 'Attributes', 
               field: 'Attributes',
-              formatter: function(cell, formatterParams){
-                const numbers = cell.getValue().split(",");
-                const mappedValues = numbers.map(num => {
-                    return attributeList[num][1];
-                });
-                return mappedValues.join("/");
+              formatter: function(cell, formatterParams, onRendered){
+                return cell.getValue().split(",").map(num=>attributeList[num][1]).join("/");
               }
             },
             colDef('Bat','number','🏏'),
