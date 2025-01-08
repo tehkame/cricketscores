@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { Tabulator, EditModule, FormatModule } from 'tabulator-tables';
 import 'tabulator-tables/dist/css/tabulator_bootstrap4.min.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 Tabulator.registerModule([EditModule, FormatModule]);
 
@@ -87,7 +88,7 @@ const PlayerList = () => {
     };
 
   return  <div className="container-fluid bg-light min-vh-100 d-flex flex-column align-items-center pt-4">
-            <button onClick={addRecord}>Add Record</button>
+            <button onClick={addRecord} class="btn btn-primary mb-3">Add Record</button>
             <div ref={tableRef}></div>
           </div>
 };
