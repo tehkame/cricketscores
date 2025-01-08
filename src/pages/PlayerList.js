@@ -34,19 +34,38 @@ const PlayerList = () => {
       .then((response) => response.json())
       .then((tabledata) => {
         const table = new Tabulator(tableRef.current, {
-          layout:'fitDataFill',
+          layout:'fitDataStretch',
           data: tabledata,
           columns: [
-            colDef('Name','input','Name',1),
+            { 
+              title: 'Name', 
+              field: 'Name', 
+              editor: 'input',
+              editorParams:{ selectContents:true},
+              minWidth: 200
+            },
             { 
               title: 'Attributes', 
               field: 'Attributes',
               formatter: function(cell, formatterParams, onRendered){
                 return cell.getValue().split(",").map(num=>attributeList[num][1]).join("/");
-              }
+              },
+              width: 15
             },
-            colDef('Bat','number','🏏'),
-            colDef('Bowl','number','◐'),
+            { 
+              title: '🏏', 
+              field: 'Bat' ,
+              editor: 'number', 
+              editorParams:{ selectContents:true},
+              width: 10
+            },
+            { 
+              title: '◐', 
+              field: 'Bowl',
+              editor:'number', 
+              editorParams:{selectContents:true},
+              width: 10
+            }
           ],
         });
         table.on("cellEdited", function(cell){
