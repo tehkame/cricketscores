@@ -1,9 +1,9 @@
 import React, { useEffect, useRef } from 'react';
-import { Tabulator, EditModule, FormatModule } from 'tabulator-tables';
+import { Tabulator, EditModule, FormatModule, PopupModule } from 'tabulator-tables';
 import 'tabulator-tables/dist/css/tabulator_bootstrap4.min.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-Tabulator.registerModule([EditModule, FormatModule]);
+Tabulator.registerModule([EditModule, FormatModule, PopupModule]);
 
 const apiUrl = 'https://csapi-b6cvdxergbf9h5e7.australiasoutheast-01.azurewebsites.net';
 
