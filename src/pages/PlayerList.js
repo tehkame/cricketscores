@@ -37,7 +37,7 @@ const PlayerList = () => {
               clickPopup:function(e, cell, onRendered){
                 const player =  cell.getRow().getData();
                 const container = document.createElement("div");
-
+                console.log(player);
                 onRendered(() => {
                   ReactDOM.render(
                     <AttributeList
