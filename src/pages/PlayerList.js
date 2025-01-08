@@ -35,11 +35,7 @@ const PlayerList = () => {
               },
               clickPopup:function(e, cell, onRendered){
                 const player =  cell.getRow().getData();
-                console.log(player);
-                onRendered(() => {
-                  return <AttributeList selectedIndices={player.Attributes ? player.Attributes.split(",") : null} playerId={player.Id}/>;
-                });
-                return container;
+                return <AttributeList selectedIndices={player.Attributes ? player.Attributes.split(",") : null} playerId={player.Id}/>;
             }
             },
             { title: '🏏', field: 'Bat', editor: 'number', editorParams:{ selectContents:true}, width: 10 },
