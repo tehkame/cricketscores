@@ -18,6 +18,14 @@ function colDef(field, editor, title, widthGrow) {
   }
 }
 
+const attributeList = {
+  1: ["Opener","Op"],
+  2: ["Spin","Sp"],
+  3: ["Wicket Keeper","WK"],
+  4: ["Pace","Pc"],
+  5: ["Captain","Cp"],
+}
+
 const PlayerList = () => {
   const tableRef = useRef(null);
 
@@ -29,25 +37,20 @@ const PlayerList = () => {
           layout:'fitDataFill',
           data: tabledata,
           columns: [
-            { title: 'Name', 
-              field: 'Name', 
-              editor: 'input',
-              editorParams:{ selectContents:true},
-              widthGrow: 1
-            },
-            colDef('Attributes'),
+            colDef('Name','input','Name',1),
             { 
-              title: '🏏', 
-              field: 'Bat' ,
-              editor: 'number', 
-              editorParams:{ selectContents:true}
+              title: 'Attributes', 
+              field: 'Attributes',
+              formatter: function(cell, formatterParams){
+                const numbers = cell.getValue().split(",");
+                const mappedValues = numbers.map(num => {
+                    return lookup[num][1];
+                });
+                return mappedValues.join("/");
+              }
             },
-            { 
-              title: '◐', 
-              field: 'Bowl',
-              editor:'number', 
-              editorParams:{selectContents:true}
-            },
+            colDef('Bat','number','🏏'),
+            colDef('Bowl','number','◐'),
           ],
         });
         table.on("cellEdited", function(cell){
@@ -57,9 +60,6 @@ const PlayerList = () => {
           fetch(`${apiUrl}/players/${cell.getData().Id}/${cell.getField()}`, {method: 'PUT',body: value})
             .then(data => console.log('Data updated successfully', data))
             .catch((error) => console.error('Error updating data', error));
-        });
-        table.on("cellEditing", function(cell){
-          console.log(cell.getValue());
         });
         return () => table.destroy();
       });
