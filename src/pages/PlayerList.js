@@ -1,8 +1,8 @@
 import React, { useEffect, useRef } from 'react';
-import { Tabulator, EditModule } from 'tabulator-tables';
+import { Tabulator, EditModule, FormatModule } from 'tabulator-tables';
 import 'tabulator-tables/dist/css/tabulator_bootstrap4.min.css';
 
-Tabulator.registerModule([EditModule]);
+Tabulator.registerModule([EditModule, FormatModule]);
 
 const apiUrl = 'https://csapi-b6cvdxergbf9h5e7.australiasoutheast-01.azurewebsites.net';
 
@@ -30,15 +30,16 @@ const PlayerList = () => {
               field: 'Name', 
               editor: 'input',
               editorParams:{ selectContents:true},
-              minWidth: 200
+              minWidth: 200,
+              widthGrow: 1
             },
             { 
-              title: 'Attributes', 
+              title: '', 
               field: 'Attributes',
               formatter: function(cell, formatterParams, onRendered){
                 return cell.getValue().split(",").map(num=>attributeList[num][1]).join("/");
               },
-              width: 15
+              width: 30
             },
             { 
               title: '🏏', 
