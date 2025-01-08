@@ -71,8 +71,23 @@ const PlayerList = () => {
       });
     }, []);  
 
+    const addRecord = () => {
+      // Example of new data you want to add
+      const newRecord = {
+        Name: 'New Value 1',
+        Attributes: '+',
+        Bat: 1,
+        Bowl: 1,
+      };
+  
+      // Add the new record to the table using Tabulator API
+      if (tableRef.current) {
+        tableRef.current.addData([newRecord]);
+      }
+    };
+
   return  <div className="container-fluid bg-light min-vh-100 d-flex flex-column align-items-center pt-4">
-            <button>Add Record</button>
+            <button onClick={addRecord}>Add Record</button>
             <div ref={tableRef}></div>
           </div>
 };
