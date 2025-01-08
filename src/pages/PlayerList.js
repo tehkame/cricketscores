@@ -41,7 +41,7 @@ const PlayerList = () => {
                 if (value===null) return "+";
                 return cell.getValue().split(",").map(num=>attributeList[num][1]).join("/");
               },
-              width: 100
+              width: 60
             },
             { 
               title: '🏏', 
@@ -71,7 +71,10 @@ const PlayerList = () => {
       });
     }, []);  
 
-  return <div ref={tableRef}></div>;
+  return  <div className="container-fluid bg-light min-vh-100 d-flex flex-column align-items-center pt-4">
+            <button>Add Record</button>
+            <div ref={tableRef}></div>
+          </div>
 };
 
 export default PlayerList;
