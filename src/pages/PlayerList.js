@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import ReactDOM from 'react-dom';
 import { Tabulator, EditModule, FormatModule, PopupModule } from 'tabulator-tables';
 import AttributeList from "./AttributeList";
 import 'tabulator-tables/dist/css/tabulator_bootstrap4.min.css';
