@@ -39,15 +39,8 @@ const PlayerList = () => {
               field: 'Attributes',
               formatter: function(cell, formatterParams, onRendered){
                 const value = cell.getValue();
-                try{
-                  if (value===null) return "+";
-                  return value.split(",").map(num=>attributeList[num][1]).join("/");
-                }
-                catch (err)
-                {
-                  console.log(value);
-                  console.log(err);
-                }
+                if (!value) return "+";
+                return value.split(",").map(num=>attributeList[num][1]).join("/");
               },
               width: 60
             },
@@ -90,7 +83,7 @@ const PlayerList = () => {
   
       // Add the new record to the table using Tabulator API
       if (tabulatorRef.current) {
-        tabulatorRef.current.addData([newRecord]);
+        tabulatorRef.current.addData([newRecord], true);
       }
     };
 
