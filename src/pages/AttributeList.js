@@ -21,8 +21,8 @@ const AttributeList = ({ selectedIndices, playerId }) => {
           <li key={index}>
             <input
               type="checkbox"
-              checked={selectedIndices.has(index)}
-              onChange={() => handleToggle(index)}
+              checked={selectedIndices.includes(index+1)}
+              onChange={() => handleToggle(index+1)}
             />
             {item[0]}
           </li>
