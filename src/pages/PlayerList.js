@@ -9,13 +9,13 @@ Tabulator.registerModule([EditModule, FormatModule, PopupModule]);
 
 const apiUrl = 'https://csapi-b6cvdxergbf9h5e7.australiasoutheast-01.azurewebsites.net';
 
-const attributeList = {
-  1: ["Opener","Op"],
-  2: ["Spin","Sp"],
-  3: ["Wicket Keeper","WK"],
-  4: ["Pace","Pc"],
-  5: ["Captain","Cp"],
-}
+const attributeList = [
+  ["Opener","Op"],
+  ["Spin","Sp"],
+  ["Wicket Keeper","WK"],
+  ["Pace","Pc"],
+  ["Captain","Cp"],
+]
 
 const PlayerList = () => {
   const tableRef = useRef(null);
@@ -32,12 +32,12 @@ const PlayerList = () => {
             { title: '', field: 'Attributes', width: 60, formatter: function(cell, formatterParams, onRendered){
                 const value = cell.getValue();
                 if (!value) return "+";
-                return value.split(",").map(num=>attributeList[num][1]).join("/");
+                return value.split(",").map(num=>attributeList[parseInt(num)-1][1]).join("/");
               },
               clickPopup:function(e, cell, onRendered){
                 const player =  cell.getRow().getData();
                 const container = document.createElement('div');
-                createRoot(container).render(<AttributeList selectedIndices={player.Attributes ? player.Attributes.split(",").map(num=>parseInt(num)) : []} playerId={player.Id}/>);
+                createRoot(container).render(<AttributeList items={attributeList} selectedIndices={player.Attributes ? player.Attributes.split(",").map(num=>parseInt(num)) : []} playerId={player.Id}/>);
                 return container;
             }
             },

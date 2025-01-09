@@ -1,31 +1,22 @@
 import React from "react";
 
-const AttributeList = ({ selectedIndices, playerId }) => {
+const AttributeList = ({ items, selectedIndices, playerId }) => {
   const handleToggle = (index) => {
 
   };
-
-  // Example list of items
-  const items = [
-    ["Opener","Op"],
-    ["Spin","Sp"],
-    ["Wicket Keeper","WK"],
-    ["Pace","Pc"],
-    ["Captain","Cp"],
-  ]
 
   return (
     <div>
       <ul>
         {items.map((item, index) => (
-          <li key={index}>
-            <input
+            <div>
+                <input
               type="checkbox"
               checked={selectedIndices.includes(index+1)}
               onChange={() => handleToggle(index+1)}
             />
             {item[0]}
-          </li>
+            </div>           
         ))}
       </ul>
     </div>
