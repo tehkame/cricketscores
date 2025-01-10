@@ -37,6 +37,18 @@ const PlayerList = () => {
               clickPopup:function(e, cell, onRendered){
                 const player =  cell.getRow().getData();
                 const container = document.createElement('div');
+                container.onblur = () => {
+                  const updatedIndices = Array.from(container.querySelectorAll("input:checked")).map(
+                    (checkbox) => (parseInt(checkbox.dataset.index)+1).toString()
+                  );
+                  console.log(updatedIndices);
+                  // Update the table row's data
+                  cell.getRow().update({ Attributes: updatedIndices.join(',') });
+
+              console.log(`Updated row data for Person ID ${personId}:`, {
+                selectedIndices: updatedIndices,
+              });
+            };
                 createRoot(container).render(<AttributeList items={attributeList} selectedIndices={player.Attributes ? player.Attributes.split(",").map(num=>parseInt(num)) : []} playerId={player.Id}/>);
                 return container;
             }
