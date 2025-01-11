@@ -49,10 +49,9 @@ const PlayerList = () => {
                     const label = document.createElement("label");
                     label.htmlFor = `checkbox-${i}`;
                     label.textContent = att[0];
-                    const lineBreak = document.createElement("br");
                     popup.appendChild(checkbox);
                     popup.appendChild(label);
-                    popup.appendChild(lineBreak);
+                    popup.appendChild(document.createElement("br"));
                   });
 
                  
