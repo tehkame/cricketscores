@@ -46,6 +46,13 @@ const PlayerList = () => {
                     checkbox.id = `checkbox-${i}`;
                     checkbox.value = i;
                     checkbox.checked = indexes.includes(i);
+                    checkbox.addEventListener('change', function() {
+                      if (this.checked) {
+                        console.log(`Checkbox ${i} is checked..`);
+                      } else {
+                        console.log(`Checkbox ${i} is not checked..`);
+                      }
+                    });
                     const label = document.createElement("label");
                     label.htmlFor = `checkbox-${i}`;
                     label.textContent = att[0];
