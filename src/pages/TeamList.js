@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, navigate } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Tabulator, EditModule, FormatModule, PopupModule } from 'tabulator-tables';
 import 'tabulator-tables/dist/css/tabulator_bootstrap4.min.css';
@@ -10,7 +10,7 @@ const apiUrl = 'https://csapi-b6cvdxergbf9h5e7.australiasoutheast-01.azurewebsit
 
 
 const TeamList = () => {
-  const navigate = useNavigate();
+  const navigateTo = useNavigate();
   const tableRef = useRef(null);
   const tabulatorRef = useRef(null);
   useEffect(() => {
@@ -28,7 +28,7 @@ const TeamList = () => {
                 button.innerHTML = '✎';
                 button.addEventListener('click', () => {
                   const teamId = cell.getRow().getData().id;
-                  navigate(`/team/${teamId}`);
+                  navigateTo(`/team/${teamId}`);
                 });
                 return button;
               }
@@ -49,7 +49,7 @@ const TeamList = () => {
         tabulatorRef.current = table;
         return () => table.destroy();
       });
-    }, []);  
+    });  
 
     const addRecord = () => {
       if (tabulatorRef.current) {
