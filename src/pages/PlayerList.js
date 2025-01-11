@@ -54,7 +54,7 @@ const PlayerList = () => {
                   });
                   const label = document.createElement("label");
                   label.htmlFor = `checkbox-${i}`;
-                  label.textContent = att[0];
+                  label.textContent = attributeList[i][0];
                   popup.appendChild(checkbox);
                   popup.appendChild(label);
                   popup.appendChild(document.createElement("br"));
