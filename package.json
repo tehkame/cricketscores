@@ -10,6 +10,7 @@
     "react-dom": "^19.0.0",
     "react-router-dom": "^7.1.1",
     "react-scripts": "5.0.1",
+    "react-tabulator": "^0.21.0",
     "tabulator-tables": "^6.3.0"
   },
   "scripts": {
