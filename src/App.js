@@ -30,7 +30,7 @@ function App() {
 function MainMenu() {
   return (
   <div className="container-fluid bg-light min-vh-100 d-flex flex-column align-items-center pt-4">
-      <div className="d-flex flex-column w-100" style={{ maxWidth: "400px" }}>
+      <div className="d-flex flex-column w-100" style={{ maxWidth: "600px" }}>
       <Link to="/new-game" className="btn btn-primary mb-3">New Game</Link>
       <Link to="/manage-teams" className="btn btn-primary mb-3">Manage Teams</Link>
       <Link to="/manage-players" className="btn btn-primary mb-3">Manage Players</Link>
