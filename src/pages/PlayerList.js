@@ -1,5 +1,4 @@
 import React, { useEffect, useRef } from 'react';
-//import { createRoot } from 'react-dom/client';
 import { Tabulator, EditModule, FormatModule, PopupModule } from 'tabulator-tables';
 import 'tabulator-tables/dist/css/tabulator_bootstrap4.min.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -54,7 +53,7 @@ const PlayerList = () => {
                   });
                   const label = document.createElement("label");
                   label.htmlFor = `checkbox-${i}`;
-                  label.textContent = attributeList[i][0];
+                  label.textContent = attributeList[i-1][0];
                   popup.appendChild(checkbox);
                   popup.appendChild(label);
                   popup.appendChild(document.createElement("br"));
