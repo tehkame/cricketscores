@@ -35,10 +35,10 @@ const PlayerList = () => {
               },
               clickPopup:function(e, cell, onRendered){
                 const popup = document.createElement('div');
-                const indexes = cell.getValue().split(",").map((val) => parseInt(val.trim()));
+                const cellVal = cell.getValue();
+                const indexes = cellVal ? cell.getValue().split(",").map((val) => parseInt(val.trim())) : [];
 
-                var i=0;
-                attributeList.forEach(att => 
+                for (let i = 1; i <= attributeList.length; i++) {
                   {
                     i++;
                     const checkbox = document.createElement("input");
@@ -59,7 +59,7 @@ const PlayerList = () => {
                     popup.appendChild(checkbox);
                     popup.appendChild(label);
                     popup.appendChild(document.createElement("br"));
-                  });
+                  };
 
                  
                 return popup;
