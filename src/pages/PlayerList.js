@@ -35,17 +35,36 @@ const PlayerList = () => {
                 return value.split(",").map(num=>attributeList[parseInt(num)-1][1]).join("/");
               },
               clickPopup:function(e, cell, onRendered){
-                const player =  cell.getRow().getData();
-                const container = document.createElement('div');
-                container.onblur = () => {
-                  const updatedIndices = Array.from(container.querySelectorAll("input:checked")).map(
-                    (checkbox) => (parseInt(checkbox.dataset.index)+1).toString()
-                  );
-                  console.log(updatedIndices);
-                  cell.getRow().update({ Attributes: updatedIndices.join(',') });
+                const popup = document.createElement('div');
+                const indexes = cell.getValue().split(",").map((val) => parseInt(val.trim()));
+
+                var i=0;
+                attributeList.forEach(att => 
+                  {
+                    i++;
+                    const checkbox = document.createElement("input");
+                    checkbox.type = "checkbox";
+                    checkbox.id = `checkbox-${i}`;
+                    checkbox.value = i;
+                    checkbox.checked = indexes.includes(i);
+                    const label = document.createElement("label");
+                    label.htmlFor = `checkbox-${i}`;
+                    label.textContent = `Option ${i}`;
+                    const lineBreak = document.createElement("br");
+                    popup.appendChild(checkbox);
+                    popup.appendChild(label);
+                    popup.appendChild(lineBreak);
+                  });
+
+                  popup.onblur = () => {
+                    const updatedIndices = Array.from(popup.querySelectorAll("input:checked")).map(
+                      (checkbox) => (parseInt(checkbox.dataset.index)+1).toString()
+                    );
+                    console.log(updatedIndices);
+                    cell.getRow().update({ Attributes: updatedIndices.join(',') });
                 };
-                createRoot(container).render(<AttributeList items={attributeList} selectedIndices={player.Attributes ? player.Attributes.split(",").map(num=>parseInt(num)) : []}/>);
-                return container;
+                //createRoot(popup).render(<AttributeList items={attributeList} selectedIndices={player.Attributes ? player.Attributes.split(",").map(num=>parseInt(num)) : []}/>);
+                return popup;
             }
             },
             { title: '🏏', field: 'Bat', editor: 'number', editorParams:{ selectContents:true}, width: 10 },
