@@ -2,9 +2,11 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import NewGame from "./pages/NewGame";
 import ManageTeams from "./pages/ManageTeams";
+import ManageTeam from "./pages/ManageTeam";
 import ManagePlayers from "./pages/ManagePlayers";
 import PastGames from "./pages/PastGames";
 import Settings from "./pages/Settings";
+
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
@@ -18,6 +20,7 @@ function App() {
           <Route path="/manage-players" element={<ManagePlayers />} />
           <Route path="/past-games" element={<PastGames />} />
           <Route path="/settings" element={<Settings />} />
+          <Route path="/team/:id" element={<ManageTeam />} />
         </Routes>
       </div>
     </Router>

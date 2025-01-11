@@ -19,6 +19,18 @@ const TeamList = () => {
           layout:'fitColumns',
           data: tabledata,
           columns: [
+            {
+              title: '✎',
+              formatter: (cell) => {
+                const button = document.createElement('button');
+                button.innerHTML = 'View Details';
+                button.addEventListener('click', () => {
+                  const teamId = cell.getRow().getData().id;
+                  navigate(`/team/${teamId}`);
+                });
+                return button;
+              }
+            },
             { title: 'Name', field: 'Name',  editor: 'input', editorParams:{ selectContents:true}, minWidth: 200, widthGrow: 1},
             { title: '🏏', field: 'Bat', width: 20 },
             { title: '◐', field: 'Bowl', width: 20 }
@@ -49,7 +61,7 @@ const TeamList = () => {
     };
 
   return  <div className="container-fluid bg-light min-vh-100 d-flex flex-column align-items-center pt-4">
-            <button onClick={addRecord} class="btn btn-primary mb-3">New Player</button>
+            <button onClick={addRecord} class="btn btn-primary mb-3">New Team</button>
             <div ref={tableRef}></div>
           </div>
 };
