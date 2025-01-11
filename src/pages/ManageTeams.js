@@ -1,11 +1,11 @@
 import React from "react";
+import TeamList from './TeamList'
 
 function ManageTeams() {
   return (
     <div>
-      <h2>Manage Teams</h2>
-      <p>Manage your teams here.</p>
-    </div>
+    <TeamList />
+  </div>
   );
 }
 
