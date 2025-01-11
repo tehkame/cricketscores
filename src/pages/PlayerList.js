@@ -38,30 +38,27 @@ const PlayerList = () => {
                 const cellVal = cell.getValue();
                 const indexes = cellVal ? cell.getValue().split(",").map((val) => parseInt(val.trim())) : [];
 
-                for (let i = 1; i <= attributeList.length; i++) {
-                  {
-                    i++;
-                    const checkbox = document.createElement("input");
-                    checkbox.type = "checkbox";
-                    checkbox.id = `checkbox-${i}`;
-                    checkbox.value = i;
-                    checkbox.checked = indexes.includes(i);
-                    checkbox.addEventListener('change', function() {
-                      if (this.checked) {
-                        console.log(`Checkbox ${i} is checked..`);
-                      } else {
-                        console.log(`Checkbox ${i} is not checked..`);
-                      }
-                    });
-                    const label = document.createElement("label");
-                    label.htmlFor = `checkbox-${i}`;
-                    label.textContent = att[0];
-                    popup.appendChild(checkbox);
-                    popup.appendChild(label);
-                    popup.appendChild(document.createElement("br"));
-                  };
-
-                 
+                for (let i = 1; i <= attributeList.length; i++)
+                {
+                  const checkbox = document.createElement("input");
+                  checkbox.type = "checkbox";
+                  checkbox.id = `checkbox-${i}`;
+                  checkbox.value = i;
+                  checkbox.checked = indexes.includes(i);
+                  checkbox.addEventListener('change', function() {
+                    if (this.checked) {
+                      console.log(`Checkbox ${i} is checked..`);
+                    } else {
+                      console.log(`Checkbox ${i} is not checked..`);
+                    }
+                  });
+                  const label = document.createElement("label");
+                  label.htmlFor = `checkbox-${i}`;
+                  label.textContent = att[0];
+                  popup.appendChild(checkbox);
+                  popup.appendChild(label);
+                  popup.appendChild(document.createElement("br"));
+                };               
                 return popup;
             }
             },
