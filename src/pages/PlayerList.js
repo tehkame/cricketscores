@@ -27,7 +27,7 @@ const PlayerList = () => {
           data: tabledata,
           columns: [
             { title: 'Name', field: 'Name',  editor: 'input', editorParams:{ selectContents:true}, minWidth: 200, widthGrow: 1},
-            { title: '', field: 'Attributes', width: 60, formatter: function(cell, formatterParams, onRendered){
+            { title: '', field: 'Attributes', width: 80, formatter: function(cell, formatterParams, onRendered){
                 const value = cell.getValue();
                 if (!value) return "+";
                 return value.split(",").map(num=>attributeList[parseInt(num)-1][1]).join("/");
@@ -51,9 +51,11 @@ const PlayerList = () => {
                     );
                     cell.setValue(selectedIndexes.join(","));
                     if (this.checked) {
-                      console.log(`Checkbox ${i} is checked for player ${playerId}`);
+                      fetch(`${apiUrl}/attributions/players/${playerId}`, {method: 'POST',body: i.toString()})
+                        .catch((error) => console.error('Error updating data', error));
                     } else {
-                      console.log(`Checkbox ${i} is unchecked for player ${playerId}`);
+                      fetch(`${apiUrl}/attributions/players/${playerId}/${i.toString()}`, {method: 'DELETE'})
+                      .catch((error) => console.error('Error updating data', error));
                     }
                   });
                   const label = document.createElement("label");
@@ -71,10 +73,12 @@ const PlayerList = () => {
           ],
         });
         table.on("cellEdited", function(cell){
+          const fieldName = cell.getField();
+          if (fieldName==='Attributes') return;
           const isNumeric = cell.getColumn().getDefinition().editor === 'number';
           var value = cell.getValue();
           if (!isNumeric) value = `'${value}'`;
-          fetch(`${apiUrl}/players/${cell.getData().Id}/${cell.getField()}`, {method: 'PUT',body: value})
+          fetch(`${apiUrl}/players/${cell.getData().Id}/${fieldName}`, {method: 'PUT',body: value})
             .catch((error) => console.error('Error updating data', error));
         });
         tabulatorRef.current = table;
