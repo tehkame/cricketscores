@@ -20,7 +20,7 @@ function App() {
           <Route path="/manage-players" element={<ManagePlayers />} />
           <Route path="/past-games" element={<PastGames />} />
           <Route path="/settings" element={<Settings />} />
-          <Route path="/team/:id" element={<ManageTeam />} />
+          <Route path="/team/:teamId" element={<ManageTeam />} />
         </Routes>
       </div>
     </Router>
