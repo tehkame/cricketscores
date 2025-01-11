@@ -46,6 +46,10 @@ const PlayerList = () => {
                   checkbox.value = i;
                   checkbox.checked = indexes.includes(i);
                   checkbox.addEventListener('change', function() {
+                    const selectedIndexes = Array.from(popup.querySelectorAll("input:checked")).map(
+                      (checkbox) => parseInt(checkbox.value)
+                    );
+                    cell.setValue(selectedIndexes.join(","));
                     if (this.checked) {
                       console.log(`Checkbox ${i} is checked for player ${playerId}`);
                     } else {
