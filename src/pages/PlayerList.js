@@ -35,6 +35,7 @@ const PlayerList = () => {
               clickPopup:function(e, cell, onRendered){
                 const popup = document.createElement('div');
                 const cellVal = cell.getValue();
+                const playerId = cell.getRow().getData().Id;
                 const indexes = cellVal ? cell.getValue().split(",").map((val) => parseInt(val.trim())) : [];
 
                 for (let i = 1; i <= attributeList.length; i++)
@@ -46,9 +47,9 @@ const PlayerList = () => {
                   checkbox.checked = indexes.includes(i);
                   checkbox.addEventListener('change', function() {
                     if (this.checked) {
-                      console.log(`Checkbox ${i} is checked..`);
+                      console.log(`Checkbox ${i} is checked for player ${playerId}`);
                     } else {
-                      console.log(`Checkbox ${i} is not checked..`);
+                      console.log(`Checkbox ${i} is unchecked for player ${playerId}`);
                     }
                   });
                   const label = document.createElement("label");
