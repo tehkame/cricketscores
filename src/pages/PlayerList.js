@@ -26,7 +26,7 @@ const PlayerList = () => {
           layout:'fitColumns',
           data: tabledata,
           columns: [
-            { title: 'Name', field: 'Name',  editor: 'input', editorParams:{ selectContents:true}, minWidth: 200, widthGrow: 1},
+            { title: 'Name', field: 'Name',  editor: 'input', editorParams:{ selectContents:true}, minWidth: 300, widthGrow: 1},
             { title: '', field: 'Attributes', width: 80, formatter: function(cell, formatterParams, onRendered){
                 const value = cell.getValue();
                 if (!value) return "+";

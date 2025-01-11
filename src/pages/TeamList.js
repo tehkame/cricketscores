@@ -27,13 +27,13 @@ const TeamList = () => {
                 const button = document.createElement('button');
                 button.innerHTML = '✎';
                 button.addEventListener('click', () => {
-                  const teamId = cell.getRow().getData().id;
+                  const teamId = cell.getRow().getData().Id;
                   navigate(`/team/${teamId}`);
                 });
                 return button;
               }
             },
-            { title: 'Name', field: 'Name',  editor: 'input', editorParams:{ selectContents:true}, minWidth: 200, widthGrow: 1},
+            { title: 'Name', field: 'Name',  editor: 'input', editorParams:{ selectContents:true}, minWidth: 300, widthGrow: 1},
             { title: '🏏', field: 'Bat', width: 20 },
             { title: '◐', field: 'Bowl', width: 20 }
           ],
