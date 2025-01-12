@@ -27,7 +27,7 @@ const ManageTeam = () => {
     .then((teamName) => {
       teamNameRef.current=teamName;
     })
-  }, []); 
+  }); 
 
   useEffect(() => {
     fetch(`${apiUrl}/funcs/teamassignments/${teamId}`)
@@ -50,7 +50,7 @@ const ManageTeam = () => {
         });
         return () => table.destroy();
       });
-    }, []);  
+    });  
 
 
   return  <div className="container-fluid bg-light min-vh-100 d-flex flex-column align-items-center pt-4">
