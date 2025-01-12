@@ -1,10 +1,10 @@
 import React, { useEffect, useRef } from 'react';
-import { Tabulator, EditModule, FormatModule, PopupModule } from 'tabulator-tables';
+import { Tabulator, FormatModule } from 'tabulator-tables';
 import { useParams } from 'react-router-dom';
 import 'tabulator-tables/dist/css/tabulator_bootstrap4.min.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-Tabulator.registerModule([EditModule, FormatModule, PopupModule]);
+Tabulator.registerModule([FormatModule]);
 
 const apiUrl = 'https://csapi-b6cvdxergbf9h5e7.australiasoutheast-01.azurewebsites.net';
 
@@ -19,15 +19,13 @@ const attributeList = [
 const ManageTeam = () => {
   const { teamId } = useParams();
   const teamTableRef = useRef(null);
-  const teamNameRef = useRef(null);
+  const [teamName, setTeamName] = useState("")
 
   useEffect(() => {
-    fetch(`${apiUrl}/funcs/teamassignments/${teamId}`)
+    fetch(`${apiUrl}/teams/:id/name/${teamId}`)
     .then((response) => response.text())
-    .then((teamName) => {
-      teamNameRef.current=teamName;
-    })
-  }); 
+    .then((data) => setText(data) )
+  }, [teamId]); 
 
   useEffect(() => {
     fetch(`${apiUrl}/funcs/teamassignments/${teamId}`)
@@ -50,11 +48,11 @@ const ManageTeam = () => {
         });
         return () => table.destroy();
       });
-    });  
+    }, [teamId]);  
 
 
   return  <div className="container-fluid bg-light min-vh-100 d-flex flex-column align-items-center pt-4">
-            <input type="text">{teamNameRef}</input>
+            <input type="text">{teamName}</input>
             <div ref={teamTableRef}></div>
           </div>
 };
