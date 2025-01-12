@@ -19,11 +19,22 @@ const attributeList = [
 const ManageTeam = () => {
   const { teamId } = useParams();
   const teamTableRef = useRef(null);
+  const teamNameRef = useRef(null);
+
+  useEffect(() => {
+    fetch(`${apiUrl}/funcs/teamassignments/${teamId}`)
+    .then((response) => response.text())
+    .then((teamName) => {
+      teamNameRef.current=teamName;
+    })
+  }, []); 
+
   useEffect(() => {
     fetch(`${apiUrl}/funcs/teamassignments/${teamId}`)
       .then((response) => response.json())
       .then((tabledata) => {
         const table = new Tabulator(teamTableRef.current, {
+          headerVisible: false,
           layout:'fitColumns',
           data: tabledata,
           columns: [
@@ -37,13 +48,13 @@ const ManageTeam = () => {
             { field: 'BatBowl', width: 30 },          
           ],
         });
-        tabulatorRef.current = table;
         return () => table.destroy();
       });
     }, []);  
 
 
   return  <div className="container-fluid bg-light min-vh-100 d-flex flex-column align-items-center pt-4">
+            <input type="text">{teamNameRef}</input>
             <div ref={teamTableRef}></div>
           </div>
 };
