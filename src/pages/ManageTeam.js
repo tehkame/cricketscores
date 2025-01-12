@@ -23,8 +23,8 @@ const ManageTeam = () => {
 
   useEffect(() => {
     fetch(`${apiUrl}/teams/${teamId}/name`)
-    .then((response) => response.text())
-    .then((data) => setTeamName(data) )
+    .then((response) => response.json())
+    .then((data) => setTeamName(data[0].Name) )
   }, [teamId]); 
 
   useEffect(() => {
