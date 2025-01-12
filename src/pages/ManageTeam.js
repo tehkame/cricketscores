@@ -52,7 +52,7 @@ const ManageTeam = () => {
 
 
   return  <div className="container-fluid bg-light min-vh-100 d-flex flex-column align-items-center pt-4">
-            <input type="text">{teamName}</input>
+            <input name="myInput" defaultValue={teamName} />
             <div ref={teamTableRef}></div>
           </div>
 };
