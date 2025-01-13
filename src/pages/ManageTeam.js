@@ -37,6 +37,18 @@ const ManageTeam = () => {
           layout:'fitColumns',
           data: tabledata,
           columns: [
+            {
+              title: '',
+              formatter: (cell) => {
+                const button = document.createElement('button');
+                button.innerHTML = '🢃';
+                button.addEventListener('click', () => {
+                  const AssignmentId = cell.getRow().getData().AssignmentId;
+                 console.log(`remove assignment ${AssignmentId}`);
+                });
+                return button;
+              }
+            },
             { field: 'Name', minWidth: 300, widthGrow: 1},
             { field: 'Attributes', width: 80, formatter: function(cell, formatterParams, onRendered){
                 const value = cell.getValue();
@@ -60,6 +72,18 @@ const ManageTeam = () => {
             layout:'fitColumns',
             data: tabledata,
             columns: [
+              {
+                title: '',
+                formatter: (cell) => {
+                  const button = document.createElement('button');
+                  button.innerHTML = '🢁';
+                  button.addEventListener('click', () => {
+                    const PlayerId = cell.getRow().getData().PlayerId;
+                   console.log(`add assignment for player ${PlayerId}`);
+                  });
+                  return button;
+                }
+              },
               { field: 'Name', minWidth: 300, widthGrow: 1},
               { field: 'Attributes', width: 80, formatter: function(cell, formatterParams, onRendered){
                   const value = cell.getValue();
