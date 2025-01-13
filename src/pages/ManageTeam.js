@@ -50,7 +50,9 @@ const ManageTeam = () => {
               button.innerHTML = '🢃';
               button.addEventListener('click', () => {
                const row = cell.getRow();
-               fetch(`${apiUrl}/assignments/${row.getData().AssignmentId}`, {method: 'DELETE'});
+               const rowData = row.getData();
+               poolTabulatorRef.current.addData(rowData,true);
+               fetch(`${apiUrl}/assignments/${rowData.AssignmentId}`, {method: 'DELETE'});
                row.delete();
               });
               return button;
@@ -83,16 +85,19 @@ useEffect(() => {
           button.innerHTML = '🢁';
           button.addEventListener('click', () => {
             if (teamTableRef.current) {
+              const row = cell.getRow();
               const rowData = cell.getRow().getData();
+              teamTabulatorRef.current.addData(rowData).then(function(rows){
+                fetch(`${apiUrl}/assignments/players/${rowData.PlayerId}`, {method: 'POST',body: teamId})
+                .then((response) => response.text())
+                .then(newAssignmentId => {
+                  rows[0].update({"AssignmentId":newAssignmentId})
+                  row.delete();
+                });
 
-              fetch(`${apiUrl}/assignments/players/${rowData.PlayerId}`, {method: 'POST',body: teamId})
-              .then((response) => response.text())
-              .then(newAssignmentId => {
-                teamTabulatorRef.current.addData(rowData).then(function(rows){
-                  rows[0].update({"AsignmentId":newAssignmentId})
-                })
-              }).catch((error) => console.error('Error adding new record', error));
-              
+              }).catch((error) => console.error('Error adding new record', error));;
+
+
             }
           });
           return button;
