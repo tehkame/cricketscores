@@ -21,83 +21,81 @@ const ManageTeam = () => {
   const teamTableRef = useRef(null);
   const poolTableRef = useRef(null);
   const [teamName, setTeamName] = useState("")
+  const [assignedPlayers, setAssignedPlayers] = useState("")
+  const [playerPool, setPlayerPool] = useState("")
 
   useEffect(() => {
-    fetch(`${apiUrl}/teams/${teamId}/name`)
-    .then((response) => response.json())
-    .then((data) => setTeamName(data[0].Name) )
-  }, [teamId]); 
-
-  useEffect(() => {
-    fetch(`${apiUrl}/funcs/teamassignments/${teamId}`)
+    fetch(`${apiUrl}/teamdetails/${teamId}`)
       .then((response) => response.json())
       .then((tabledata) => {
-        const table = new Tabulator(teamTableRef.current, {
-          headerVisible: false,
-          layout:'fitColumns',
-          data: tabledata,
-          columns: [
-            {
-              title: '',
-              formatter: (cell) => {
-                const button = document.createElement('button');
-                button.innerHTML = '🢃';
-                button.addEventListener('click', () => {
-                  const AssignmentId = cell.getRow().getData().AssignmentId;
-                 console.log(`remove assignment ${AssignmentId}`);
-                });
-                return button;
-              }
-            },
-            { field: 'Name', minWidth: 300, widthGrow: 1},
-            { field: 'Attributes', width: 80, formatter: function(cell, formatterParams, onRendered){
-                const value = cell.getValue();
-                if (!value) return "+";
-                return value.split(",").map(num=>attributeList[parseInt(num)-1][1]).join("/");
-              }       
-            },
-            { field: 'BatBowl', width: 50 },          
-          ],
-        });
-        return () => table.destroy();
+
+        setTeamName(tabledata.teamName);
+        setAssignedPlayers(tabledata.assignedPlayers);
+        setPlayerPool(tabledata.playerPool);
       });
     }, [teamId]);  
 
     useEffect(() => {
-      fetch(`${apiUrl}/views/playerpool`)
-        .then((response) => response.json())
-        .then((tabledata) => {
-          const table = new Tabulator(poolTableRef.current, {
-            headerVisible: false,
-            layout:'fitColumns',
-            data: tabledata,
-            columns: [
-              {
-                title: '',
-                formatter: (cell) => {
-                  const button = document.createElement('button');
-                  button.innerHTML = '🢁';
-                  button.addEventListener('click', () => {
-                    const PlayerId = cell.getRow().getData().PlayerId;
-                   console.log(`add assignment for player ${PlayerId}`);
-                  });
-                  return button;
-                }
-              },
-              { field: 'Name', minWidth: 300, widthGrow: 1},
-              { field: 'Attributes', width: 80, formatter: function(cell, formatterParams, onRendered){
-                  const value = cell.getValue();
-                  if (!value) return "+";
-                  return value.split(",").map(num=>attributeList[parseInt(num)-1][1]).join("/");
-                }       
-              },
-              { field: 'BatBowl', width: 50},          
-            ],
-          });
-          return () => table.destroy();
-        });
-      }, [teamId]);  
+      const table1 = new Tabulator(teamTableRef.current, {
+        headerVisible: false,
+        layout:'fitColumns',
+        data: tabledata.assignedPlayers,
+        columns: [
+          {
+            title: '',
+            formatter: (cell) => {
+              const button = document.createElement('button');
+              button.innerHTML = '🢃';
+              button.addEventListener('click', () => {
+                const AssignmentId = cell.getRow().getData().AssignmentId;
+               console.log(`remove assignment!! ${AssignmentId}`);
+              });
+              return button;
+            }
+          },
+          { field: 'Name', minWidth: 300, widthGrow: 1},
+          { field: 'Attributes', width: 80, formatter: function(cell, formatterParams, onRendered){
+              const value = cell.getValue();
+              if (!value) return "+";
+              return value.split(",").map(num=>attributeList[parseInt(num)-1][1]).join("/");
+            }       
+          },
+          { field: 'BatBowl', width: 50 },          
+        ],
+      });
+      return () => table1.destroy();
+},[assignedPlayers]);
 
+useEffect(() => {
+  const table2 = new Tabulator(poolTableRef.current, {
+    headerVisible: false,
+    layout:'fitColumns',
+    data: tabledata,
+    columns: [
+      {
+        title: '',
+        formatter: (cell) => {
+          const button = document.createElement('button');
+          button.innerHTML = '🢁';
+          button.addEventListener('click', () => {
+            const PlayerId = cell.getRow().getData().PlayerId;
+           console.log(`add assignment for player ${PlayerId}`);
+          });
+          return button;
+        }
+      },
+      { field: 'Name', minWidth: 300, widthGrow: 1},
+      { field: 'Attributes', width: 80, formatter: function(cell, formatterParams, onRendered){
+          const value = cell.getValue();
+          if (!value) return "+";
+          return value.split(",").map(num=>attributeList[parseInt(num)-1][1]).join("/");
+        }       
+      },
+      { field: 'BatBowl', width: 50},          
+    ],
+  });
+  return () => table2.destroy();
+},[playerPool]);
 
   return  <div className="container-fluid bg-light min-vh-100 d-flex flex-column align-items-center pt-4">
             <input name="myInput" defaultValue={teamName} />
