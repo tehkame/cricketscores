@@ -19,7 +19,9 @@ const attributeList = [
 const ManageTeam = () => {
   const { teamId } = useParams();
   const teamTableRef = useRef(null);
+  const teamTabulatorRef = useRef(null);
   const poolTableRef = useRef(null);
+  const poolTabulatorRef = useRef(null);
   const [teamName, setTeamName] = useState("")
   const [assignedPlayers, setAssignedPlayers] = useState("")
   const [playerPool, setPlayerPool] = useState("")
@@ -36,10 +38,10 @@ const ManageTeam = () => {
     }, [teamId]);  
 
     useEffect(() => {
-      const table1 = new Tabulator(teamTableRef.current, {
+      const table = new Tabulator(teamTableRef.current, {
         headerVisible: false,
         layout:'fitColumns',
-        data: tabledata.assignedPlayers,
+        data: assignedPlayers,
         columns: [
           {
             title: '',
@@ -47,8 +49,9 @@ const ManageTeam = () => {
               const button = document.createElement('button');
               button.innerHTML = '🢃';
               button.addEventListener('click', () => {
-                const AssignmentId = cell.getRow().getData().AssignmentId;
-               console.log(`remove assignment!! ${AssignmentId}`);
+               const row = cell.getRow();
+               fetch(`${apiUrl}/assignments/${row.getData().AssignmentId}`, {method: 'DELETE'});
+               row.delete();
               });
               return button;
             }
@@ -63,14 +66,15 @@ const ManageTeam = () => {
           { field: 'BatBowl', width: 50 },          
         ],
       });
-      return () => table1.destroy();
+      teamTabulatorRef.current = table;
+      return () => table.destroy();
 },[assignedPlayers]);
 
 useEffect(() => {
-  const table2 = new Tabulator(poolTableRef.current, {
+  const table = new Tabulator(poolTableRef.current, {
     headerVisible: false,
     layout:'fitColumns',
-    data: tabledata,
+    data: playerPool,
     columns: [
       {
         title: '',
@@ -78,8 +82,18 @@ useEffect(() => {
           const button = document.createElement('button');
           button.innerHTML = '🢁';
           button.addEventListener('click', () => {
-            const PlayerId = cell.getRow().getData().PlayerId;
-           console.log(`add assignment for player ${PlayerId}`);
+            if (teamTableRef.current) {
+              const rowData = cell.getRow().getData();
+
+              fetch(`${apiUrl}/assignments/players/${rowData.PlayerId}`, {method: 'POST',body: teamId})
+              .then((response) => response.text())
+              .then(newAssignmentId => {
+                teamTabulatorRef.current.addData(rowData).then(function(rows){
+                  rows[0].update({"AsignmentId":newAssignmentId})
+                })
+              }).catch((error) => console.error('Error adding new record', error));
+              
+            }
           });
           return button;
         }
@@ -94,7 +108,8 @@ useEffect(() => {
       { field: 'BatBowl', width: 50},          
     ],
   });
-  return () => table2.destroy();
+  poolTabulatorRef.current = table;
+  return () => table.destroy();
 },[playerPool]);
 
   return  <div className="container-fluid bg-light min-vh-100 d-flex flex-column align-items-center pt-4">
