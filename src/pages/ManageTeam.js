@@ -19,6 +19,7 @@ const attributeList = [
 const ManageTeam = () => {
   const { teamId } = useParams();
   const teamTableRef = useRef(null);
+  const poolTableRef = useRef(null);
   const [teamName, setTeamName] = useState("")
 
   useEffect(() => {
@@ -43,17 +44,42 @@ const ManageTeam = () => {
                 return value.split(",").map(num=>attributeList[parseInt(num)-1][1]).join("/");
               }       
             },
-            { field: 'BatBowl', width: 30 },          
+            { field: 'BatBowl', width: 50 },          
           ],
         });
         return () => table.destroy();
       });
     }, [teamId]);  
 
+    useEffect(() => {
+      fetch(`${apiUrl}/views/playerpool`)
+        .then((response) => response.json())
+        .then((tabledata) => {
+          const table = new Tabulator(poolTableRef.current, {
+            headerVisible: false,
+            layout:'fitColumns',
+            data: tabledata,
+            columns: [
+              { field: 'Name', minWidth: 300, widthGrow: 1},
+              { field: 'Attributes', width: 80, formatter: function(cell, formatterParams, onRendered){
+                  const value = cell.getValue();
+                  if (!value) return "+";
+                  return value.split(",").map(num=>attributeList[parseInt(num)-1][1]).join("/");
+                }       
+              },
+              { field: 'BatBowl', width: 50},          
+            ],
+          });
+          return () => table.destroy();
+        });
+      }, [teamId]);  
+
 
   return  <div className="container-fluid bg-light min-vh-100 d-flex flex-column align-items-center pt-4">
             <input name="myInput" defaultValue={teamName} />
             <div ref={teamTableRef}></div>
+            <div><h2>Available Players</h2></div>
+            <div ref={poolTableRef}></div>
           </div>
 };
 
