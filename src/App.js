@@ -6,6 +6,7 @@ import ManageTeam from "./pages/ManageTeam";
 import ManagePlayers from "./pages/ManagePlayers";
 import PastGames from "./pages/PastGames";
 import Settings from "./pages/Settings";
+import Match from "./pages/Match";
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -21,6 +22,7 @@ function App() {
           <Route path="/past-games" element={<PastGames />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="/team/:teamId" element={<ManageTeam />} />
+          <Route path="/match/:matchId" element={<Match />} />
         </Routes>
       </div>
     </Router>

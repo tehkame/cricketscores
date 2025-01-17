@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Tabulator, EditModule, FormatModule, PopupModule } from 'tabulator-tables';
 import 'tabulator-tables/dist/css/tabulator_bootstrap4.min.css';
@@ -11,15 +11,24 @@ const apiUrl = 'https://csapi-b6cvdxergbf9h5e7.australiasoutheast-01.azurewebsit
 
 const TeamList = () => {
   const navigate = useNavigate();
+
   const tableRef = useRef(null);
   const tabulatorRef = useRef(null);
+
+  const [tableData, setTableData] = useState(null);
+
+    useEffect(() => {
+      fetch(`${apiUrl}/views/teamlist`)
+        .then((response) => response.json())
+        .then((responseJson) => {
+          setTableData(responseJson)
+        });
+    }, []);
+
   useEffect(() => {
-    fetch(`${apiUrl}/views/teamlist`)
-      .then((response) => response.json())
-      .then((tabledata) => {
+        if(!tableData) return;
         const table = new Tabulator(tableRef.current, {
-          layout:'fitColumns',
-          data: tabledata,
+          data: tableData,
           columns: [
             {
               title: '',
@@ -33,9 +42,9 @@ const TeamList = () => {
                 return button;
               }
             },
-            { title: 'Name', field: 'Name',  editor: 'input', editorParams:{ selectContents:true}, minWidth: 300, widthGrow: 1},
-            { title: '🏏', field: 'Bat', width: 20 },
-            { title: '◐', field: 'Bowl', width: 20 }
+            { title: 'Name', field: 'Name',  editor: 'input', editorParams:{ selectContents:true}, minWidth: 200, widthGrow: 1},
+            { title: '🏏', field: 'Bat', width: 60 },
+            { title: '◐', field: 'Bowl', width: 60 }
           ],
         });
         table.on("cellEdited", function(cell){
@@ -47,9 +56,8 @@ const TeamList = () => {
             .catch((error) => console.error('Error updating data', error));
         });
         tabulatorRef.current = table;
-        return () => table.destroy();
-      });
-    });  
+        return () => table.destroy();      
+    }, [tableData]);  
 
     const addRecord = () => {
       if (tabulatorRef.current) {
@@ -63,8 +71,13 @@ const TeamList = () => {
     };
 
   return  <div className="container-fluid bg-light min-vh-100 d-flex flex-column align-items-center pt-4">
+            {tableData ? ( <div>
             <button onClick={addRecord} class="btn btn-primary mb-3">New Team</button>
             <div ref={tableRef}></div>
+            </div>) :
+            (<div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+              <div class="spinner-border" role="status"/>
+            </div>)}
           </div>
 };
 

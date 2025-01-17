@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function NewGame() {
+
+  const navigate = useNavigate();
+
   const apiUrl = 'https://csapi-b6cvdxergbf9h5e7.australiasoutheast-01.azurewebsites.net';
 
   const [options, setOptions] = useState([]); // State to store dropdown options
@@ -37,16 +41,14 @@ function NewGame() {
   };
 
   const startGame = () => {
-    console.log("Game start!");
+    navigate(`/match/18`);
   };
 
   return (
     <div className="container-fluid bg-light min-vh-100 d-flex flex-column align-items-center pt-4">
     {loading ? (
         <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-          <div class="spinner-border" role="status">
-           
-          </div>
+          <div class="spinner-border" role="status"/>
         </div>
       ) : (
         <>
