@@ -30,33 +30,39 @@ const Match = () => {
     (
             
           <div className="mb-3 w-100">
-             <div className="border rounded p-1"><span className="fw-bold d-block w-100">Game Name</span></div>
              <div className="d-flex justify-content-between align-items-center">
 
     <div className="d-flex flex-column flex-grow-1">
+    <div className="border rounded p-1"><span className="fw-bold d-block w-100">{pageData.MatchName}</span></div>
       <div className="border rounded p-1">
-        <span className="fw-bold d-block">{pageData.Teams[0].Name}</span>
+        <span className="d-block">{pageData.Teams[0].Name}</span>
       </div>
       <div className="border rounded p-1">
-        <span className="fw-bold d-block">{pageData.Teams[1].Name}</span>
+        <span className="d-block">{pageData.Teams[1].Name}</span>
       </div>
     </div>
 
     <div className="d-flex flex-column flex-shrink-0 mx-2">
-      <div className="border rounded p-1">
-        <span className="fw-bold d-block">{pageData.Teams[0].Score1}</span>
+    <div className="border rounded p-1">
+        <span className="fw-bold d-block">1st</span>
       </div>
       <div className="border rounded p-1">
-        <span className="fw-bold d-block">{pageData.Teams[1].Score1}</span>
+        <span className="d-block">{pageData.Teams[0].Score1 ?? "0"}</span>
+      </div>
+      <div className="border rounded p-1">
+        <span className="d-block">{pageData.Teams[1].Score1 ?? "\u2003"}</span>
       </div>
     </div>
 
     <div className="d-flex flex-column flex-shrink-0">
-      <div className="border rounded p-1">
-        <span className="fw-bold d-block">{pageData.Teams[0].Score2}</span>
+    <div className="border rounded p-1">
+        <span className="fw-bold d-block">2nd</span>
       </div>
       <div className="border rounded p-1">
-        <span className="fw-bold d-block">{pageData.Teams[1].Score2}</span>
+        <span className="fw-bold d-block">{pageData.Teams[0].Score2 ?? "\u2003"}</span>
+      </div>
+      <div className="border rounded p-1">
+        <span className="fw-bold d-block">{pageData.Teams[1].Score2 ?? "\u2003"}</span>
       </div>
     </div>
   </div>
