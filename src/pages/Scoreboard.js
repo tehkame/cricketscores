@@ -53,8 +53,7 @@ const Scoreboard = (
     setLoading(false)
   }
 
-  return ( isLoading ? setInitialData() : 
-    <div> {console.log("I")}
+  return ( isLoading ? setInitialData() :
     <div className="container-fluid bg-light min-vh-100 d-flex flex-column align-items-center pt-4">       
       <div className="mb-3 w-100">
   
@@ -94,12 +93,7 @@ const Scoreboard = (
                 Select batsman
               </option>
               {activeBatsmen.filter((b)=>b.Id !== selectedBatsman2.Id).map((b) => (
-                <option>
-                <div class="d-flex justify-content-between">
-                  <div className="d-flex flex-column flex-grow-1"><span>Left</span></div>
-                  <div className="d-flex flex-column flex-shrink-0"><span>Right</span></div>
-                </div>
-              </option>
+                <option key={b.Id} value={b.Id}>{b.Name} {b.Attributes} {b.DisplayValue}</option>
               ))}
           </select>
             </div>
@@ -109,18 +103,42 @@ const Scoreboard = (
             </div>
 
             <div className="d-flex flex-column flex-grow-1">      
-              <select value ={selectedBatsman2.Id} onChange={handleChangeBatsman2}>
+              <select  className="form-select selectpicker" value={selectedBatsman2.Id} onChange={handleChangeBatsman2}>
                 <option value="" disabled >
                 Select batsman
               </option>
               {activeBatsmen.filter((b)=>b.Id !== selectedBatsman1.Id).map((b) => (
-                <option key={b.Id} value={b.Id}><div className="d-flex justify-content-between align-items-center"><div className="d-flex flex-column flex-grow-1">{b.Name}</div><div className="d-flex flex-column flex-shrink-0">({b.DisplayValue})</div></div></option>
+                <option key={b.Id} value={b.Id}>{b.Name} {b.Attributes} {b.DisplayValue}</option>
               ))}
           </select>
             </div>
 
   
         </div>
+
+        <div className="d-flex justify-content-between align-items-center">
+          <div className="d-flex flex-column flex-grow-1">      
+            <div className="border rounded p-1"><span className="fw-bold d-block w-100">Bowler</span></div>
+            <select  className="form-select selectpicker" value={selectedBatsman2.Id} onChange={handleChangeBatsman2}>
+                <option value="" disabled >
+                Select batsman
+              </option>
+              {activeBowlers.map((b) => (
+                <option key={b.Id} value={b.Id}>{b.Name} {b.Attributes} {b.DisplayValue}</option>
+              ))}
+          </select>
+          </div>
+
+          <div className="d-flex flex-column flex-shrink-0">      
+              <div className="border rounded p-1"><span className="fw-bold d-block w-100">Field</span></div>
+              <div className="border rounded p-1">
+                <div className="d-flex">
+                  <span className="d-block">{activeSpell.Id}</span>
+                  <span className="d-block">222222222222222222</span>
+                </div>
+              </div>
+        </div>
+
       </div>
     </div>
     </div>
