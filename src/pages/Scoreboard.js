@@ -3,6 +3,7 @@ import { Tabulator, FormatModule } from 'tabulator-tables';
 import { useParams } from 'react-router-dom';
 import 'tabulator-tables/dist/css/tabulator_bootstrap4.min.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap-select/dist/js/bootstrap-select.min.js';
 
 Tabulator.registerModule([FormatModule]);
 
@@ -31,12 +32,10 @@ const Scoreboard = (
   const [activeSession, setActiveSession] = useState();
   const [activeSpell, setActiveSpell] = useState();
 
-  const [selectedBatsman1, setSelectedBatsman1] = useState("");
-  const [selectedBatsman2, setSelectedBatsman2] = useState("");
+  const [selectedBatsman1, setSelectedBatsman1] = useState({Id:""});
+  const [selectedBatsman2, setSelectedBatsman2] = useState({Id:""});
 
   const handleChangeBatsman1 = (event) => {  
-    console.log(selectedBatsman1.Name)
-
     const bts = activeBatsmen.filter((b) => b.Id==event.target.value)[0];
     setSelectedBatsman1(bts);
   };
@@ -88,33 +87,38 @@ const Scoreboard = (
             <div className="d-flex flex-column flex-shrink-0">      
               <div className="border rounded p-1"><span className="fw-bold d-block w-100">On:</span></div>
             </div>
+
             <div className="d-flex flex-column flex-grow-1">      
-              <select value ={selectedBatsman1} onChange={handleChangeBatsman1}>
+              <select  className="form-select selectpicker" value={selectedBatsman1.Id} onChange={handleChangeBatsman1}>
                 <option value="" disabled >
                 Select batsman
               </option>
-              {activeBatsmen.filter((b) => b.Id !== selectedBatsman2.Id).map((b) => (
-                <option key={b.Id} value={b.Id}>
-                  {b.Name} ({b.DisplayValue})
-                </option>
+              {activeBatsmen.filter((b)=>b.Id !== selectedBatsman2.Id).map((b) => (
+                <option>
+                <div class="d-flex justify-content-between">
+                  <div className="d-flex flex-column flex-grow-1"><span>Left</span></div>
+                  <div className="d-flex flex-column flex-shrink-0"><span>Right</span></div>
+                </div>
+              </option>
               ))}
           </select>
             </div>
+            
             <div className="d-flex flex-column flex-shrink-0">      
               <div className="border rounded p-1"><span className="fw-bold d-block w-100">Off:</span></div>
             </div>
+
             <div className="d-flex flex-column flex-grow-1">      
-              <select select value ={selectedBatsman2} onChange={handleChangeBatsman2}>
-                <option value="" disabled>
-                  Select batsman
+              <select value ={selectedBatsman2.Id} onChange={handleChangeBatsman2}>
+                <option value="" disabled >
+                Select batsman
               </option>
-              {activeBatsmen.filter((b) => b.Id !== selectedBatsman1.Id).map((b) => (
-                <option key={b.Id} value={b.Id}>
-                  {b.Name} ({b.DisplayValue})
-                </option>
+              {activeBatsmen.filter((b)=>b.Id !== selectedBatsman1.Id).map((b) => (
+                <option key={b.Id} value={b.Id}><div className="d-flex justify-content-between align-items-center"><div className="d-flex flex-column flex-grow-1">{b.Name}</div><div className="d-flex flex-column flex-shrink-0">({b.DisplayValue})</div></div></option>
               ))}
           </select>
             </div>
+
   
         </div>
       </div>

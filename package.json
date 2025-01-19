@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "bootstrap": "^5.3.3",
+    "bootstrap-select": "^1.13.18",
     "cra-template": "1.2.0",
     "express": "^4.21.2",
     "react": "^19.0.0",
