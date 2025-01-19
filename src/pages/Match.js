@@ -33,6 +33,7 @@ const Match = () => {
         pinnings={matchData.Innings} 
         pactiveBowlers={matchData.ActiveBowlers} 
         pteams={matchData.Teams} 
+        lookups={matchData.Lookups}
       />
      :
     (
