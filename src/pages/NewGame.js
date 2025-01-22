@@ -9,8 +9,9 @@ function NewGame() {
   const apiUrl = 'https://csapi-b6cvdxergbf9h5e7.australiasoutheast-01.azurewebsites.net';
 
   const [options, setOptions] = useState([]); // State to store dropdown options
-  const [selectedBatting, setSelectedBatting] = useState(""); // State for selected value
-  const [selectedBowling, setSelectedBowling] = useState("");
+  const [selectedBatting, setSelectedBatting] = useState({Id:""}); // State for selected value
+  const [selectedBowling, setSelectedBowling] = useState({Id:""});
+  const [gameName, setGameName] = useState("");
   const [loading, setLoading] = useState(true); // State for loading status
 
   useEffect(() => {
@@ -30,18 +31,34 @@ function NewGame() {
     }
 
     fetchOptions();
-  }, []); // Empty dependency array to fetch data only on component mount
+  }, []);
 
   const handleBattingDropdownChange = (event) => {
-    setSelectedBatting(event.target.value); // Update state with selected value
+    const newId = event.target.value;
+    const bts = options.filter((b) => b.Id==newId)[0];
+    setSelectedBatting(bts);
+    if(bts.Name && selectedBowling.Name) 
+      setGameName(`${bts.Name} V ${selectedBowling.Name}`);
   };
 
   const handleBowlingDropdownChange = (event) => {
-    setSelectedBowling(event.target.value); // Update state with selected value
+    const newId = event.target.value;
+    const bts = options.filter((b) => b.Id==newId)[0];
+    setSelectedBowling(bts);
+    if(selectedBatting.Name && bts.Name) 
+      setGameName(`${selectedBatting.Name} V ${bts.Name}`);
+  };
+
+  const handleGamenameChange = (event) => {
+    setGameName(event.target.value); 
+    console.log(`Set game name to: ${gameName}`);
   };
 
   const startGame = () => {
-    navigate(`/match/18`);
+    setLoading(true);
+    fetch(`${apiUrl}/newgame/${selectedBatting.Id}/${selectedBowling.Id}`, {method: 'POST',body: gameName})
+        .then((response) => response.text())
+        .then((newMatchId) => navigate(`/match/${newMatchId}`))
   };
 
   return (
@@ -58,13 +75,13 @@ function NewGame() {
           </label>
           <select
             id="battingteam"
-            value={selectedBatting}
+            value={selectedBatting.Id}
             onChange={handleBattingDropdownChange}
             style={{ padding: "5px", fontSize: "16px" }}
           >
-            <option value="">--Select an option--</option>
+            <option value="" disabled>--Select an option--</option>
             {options.map((option) => (
-              <option key={option.Id} value={option.Name}>
+              <option key={option.Id} value={option.Id}>
                 {option.Name}
               </option>
             ))}
@@ -75,19 +92,18 @@ function NewGame() {
           </label>
           <select
             id="bowlingteam"
-            value={selectedBowling}
+            value={selectedBowling.Id}
             onChange={handleBowlingDropdownChange}
             style={{ padding: "5px", fontSize: "16px" }}
           >
-            <option value="">--Select an option--</option>
+            <option value="" disabled>--Select an option--</option>
             {options.map((option) => (
-              <option key={option.Id} value={option.Name}>
+              <option key={option.Id} value={option.Id}>
                 {option.Name}
               </option>
             ))}
           </select>
 
-          {/* Text box */}
           <div style={{ marginTop: "20px" }}>
             <label htmlFor="textbox" style={{ marginRight: "10px" }}>
               Game Name:
@@ -95,14 +111,15 @@ function NewGame() {
             <input
               id="textbox"
               type="text"
-              value={selectedBatting&&selectedBowling ? `${selectedBatting} V ${selectedBowling}` : ""}
-              readOnly
+              
+              value={gameName}
               style={{ padding: "5px", fontSize: "16px", width: "200px" }}
+              onChange={handleGamenameChange}
             />
           </div>
             <br/>
             <br/>
-          <button onClick={startGame} class="btn btn-primary mb-3">Start Game</button>
+          <button onClick={startGame} class="btn btn-primary mb-3" disabled={!selectedBatting.Id || !selectedBowling.Id || !gameName}>Start Game</button>
         </>
       )}
   </div>

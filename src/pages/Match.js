@@ -34,6 +34,7 @@ const Match = () => {
         pactiveBowlers={matchData.ActiveBowlers} 
         pteams={matchData.Teams} 
         lookups={matchData.Lookups}
+        pevents={matchData.Events}
       />
      :
     (
