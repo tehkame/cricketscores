@@ -23,7 +23,6 @@ const Scoreboard = (
   const [activeBatsmen, setActiveBatsmen] = useState(pactiveBatsmen);
   const [activeBowlers, setActiveBowlers] = useState(pactiveBowlers);
   const [teams, setTeams] = useState(pteams);
-  //const [events, setEvents] = useState(pevents);
   const [currentEvent, setCurrentEvent] = useState(pevents[0]);
   const [batQuantity, setBatQuantity] = useState(3);
   const [selectedBatsman1, setSelectedBatsman1] = useState(pevents[0].Batter1Id ? getById(pactiveBatsmen, pevents[0].Batter1Id) : nullPlayer);
@@ -64,7 +63,7 @@ useEffect(() => {
           tabulatorRef.current.addData(events, true);
           setCurrentEvent(events[0])
           setSelectedBatsman1(getById(pactiveBatsmen, events[0].Batter1Id))
-          setSelectedBatsman2(getById(pactiveBatsmen, events[0].Batter2Id))
+          setSelectedBatsman2(getById(pactiveBatsmen, events[0].Batter2Id) ?? nullPlayer)
           setActiveBatsmen(activeBatsmen);
           setActiveBowlers(activeBowlers);
           setTeams(teams);
@@ -115,7 +114,7 @@ useEffect(() => {
     }
     const newActionResponse = await fetch(`${apiUrl}/newaction/${currentEvent.SpellId}`, {method: 'POST',body: JSON.stringify(insertAction)});
     const newAction = await newActionResponse.json();
-    newAction.Out = out;
+    newAction.Out = lookups.Outs[out-1];
     return await newAction;
   }
 
