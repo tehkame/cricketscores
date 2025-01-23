@@ -196,7 +196,7 @@ useEffect(() => {
             <div className="d-flex flex-column flex-grow-1">    
               <select  className="form-select selectpicker" value={selectedBatsman1.Id} onChange={(event) => handleChangeById(event, activeBatsmen, setSelectedBatsman1)} disabled={currentEvent?.Batter1Id}>
                 <option value="" disabled >Select batsman</option>
-                {activeBatsmen.filter((b)=>b.Id !== selectedBatsman2.Id && !b.Out).map((b) => (<option key={b.Id} value={b.Id}>{b.Name} {b.Attributes} {b.DisplayValue}</option>))}
+                {activeBatsmen.filter((b)=>b.Id !== selectedBatsman2?.Id && !b.Out).map((b) => (<option key={b.Id} value={b.Id}>{b.Name} {b.Attributes} {b.DisplayValue}</option>))}
               </select>              
             </div>
             
@@ -207,7 +207,7 @@ useEffect(() => {
             <div className="d-flex flex-column flex-grow-1">  
               <select  className="form-select selectpicker" value={selectedBatsman2.Id} onChange={(event) => handleChangeById(event, activeBatsmen, setSelectedBatsman2)} disabled={currentEvent?.Batter2Id}>
                 <option value="" disabled >Select batsman</option>
-                {activeBatsmen.filter((b)=>b.Id !== selectedBatsman1.Id && !b.Out).map((b) => (<option key={b.Id} value={b.Id}>{b.Name} {b.Attributes} {b.DisplayValue}</option>))}
+                {activeBatsmen.filter((b)=>b.Id !== selectedBatsman1?.Id && !b.Out).map((b) => (<option key={b.Id} value={b.Id}>{b.Name} {b.Attributes} {b.DisplayValue}</option>))}
               </select>
             </div>
  
