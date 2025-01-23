@@ -8,8 +8,10 @@ Tabulator.registerModule([EditModule, FormatModule, PopupModule]);
 
 const apiUrl = 'https://csapi-b6cvdxergbf9h5e7.australiasoutheast-01.azurewebsites.net';
 
+const navigate = useNavigate();
 
 const TeamList = () => {
+
 
   const tableRef = useRef(null);
   const tabulatorRef = useRef(null);
@@ -36,7 +38,7 @@ const TeamList = () => {
                 button.innerHTML = '✎';
                 button.addEventListener('click', () => {
                   const teamId = cell.getRow().getData().Id;
-                  useNavigate(`/team/${teamId}`);
+                  navigate(`/team/${teamId}`);
                 });
                 return button;
               }
