@@ -1,16 +1,44 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Tabulator, FormatModule, FilterModule } from 'tabulator-tables';
-import { apiUrl } from "./utils/constants";
-import { getD6, getRandomTo, getById, handleChangeById } from "./utils/utils";
+import { Tabulator, FormatModule } from 'tabulator-tables';
+import { useParams } from 'react-router-dom';
 import 'tabulator-tables/dist/css/tabulator_bootstrap4.min.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-select/dist/js/bootstrap-select.min.js';
-Tabulator.registerModule([FormatModule, FilterModule]);
+import d1 from './img/1.png';
+import d2 from './img/1.png';
+import d3 from './img/1.png';
+import d4 from './img/1.png';
+import d5 from './img/1.png';
+import d6 from './img/1.png';
 
+Tabulator.registerModule([FormatModule]);
+
+const apiUrl = 'https://csapi-b6cvdxergbf9h5e7.australiasoutheast-01.azurewebsites.net';
+
+const dice = [
+  "iVBORw0KGgoAAAANSUhEUgAAABAAAAASCAYAAABSO15qAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAABPSURBVDhPY/wPBIyMjAzkAKBWBpBOkBkQERIByGImKJtsMGoAAQNAoUwoinEagKwRnyG08wJy4sKX0PC6AKSRUCqlnReIBcPAAAoLlP8MAA20Hhndux77AAAAAElFTkSuQmCC",
+  "iVBORw0KGgoAAAANSUhEUgAAABAAAAASCAYAAABSO15qAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAABhSURBVDhPvZTBCgAgCEO1///nctShEEUt2imCvZqNuIuYmSoSK8EJxtxJCge3tS5LAUDNRDoAuzEKeRthH2Z0sOoGMGZe5W2Eiv4BrH6EAF4//kTw+hG+gdWP6wiXH0qnAXITKhmVbjO7AAAAAElFTkSuQmCC",
+  "iVBORw0KGgoAAAANSUhEUgAAABAAAAASCAYAAABSO15qAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAABxSURBVDhPtZRRCsAwCEN1979zV+kYNmiJa/e+ZJAsvI9q66iqfKFHxZLWMb4UsR9fz01hAVxLF/igv0sLIugC78nfpQUWROHLgkgakhZk0pD/JGbSkOWCSBoyFTDSkLeAlYack8hKQ6YFjDRk80FpcgPWcjYZiIyhFAAAAABJRU5ErkJggg==",
+  "iVBORw0KGgoAAAANSUhEUgAAABAAAAASCAYAAABSO15qAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAABqSURBVDhPzZRBDsAgCASh//+zZWIPaGuClkTnRDawghi1GKoqK1ipUIlHVSbh4OuJl3kZ4Po10khvDHxCJIbcEfxlRmKgH9NO2sIs+QbM1a8KRnpj4BMiMeSOENl9v3L6MW3jO/j5oRS5AbyeMi0FWcwdAAAAAElFTkSuQmCC",
+  "iVBORw0KGgoAAAANSUhEUgAAABAAAAASCAYAAABSO15qAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAB+SURBVDhPrZRBDoAgDASp//8zdtE0penSiMxJWFnqHJSuiEjbQY82nETHs/MRXHy9zwNsrKbJcivwQVbC8mmCHazAe8icsByz6PqQxAheyHx4aAGTFjknMcKkRZYT4GAleCqopGW5FfggK2H5OYmVNJZjFl2vRTHwKT9/KL3dIQw+LZe0CRwAAAAASUVORK5CYII=",
+  "iVBORw0KGgoAAAANSUhEUgAAABAAAAASCAYAAABSO15qAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAABxSURBVDhPrYwBCsAgDAP7/093c7usTAOKeBCwR0zkTURshb/vYweG/gNIrsJ5XEmVFDHxBwcafUk4jxvLq9gBJFfhPK6kSoqY+IMDjb4knMeN5VXsAJKrcB5XUiVFTPzBgUZfEs7jxvIqz8D32Ehm5gV4jPEroqb9EQAAAABJRU5ErkJggg=="
+];
+
+const getLast = (array) => array[array.length-1];
+
+const getDSix = (n) => `&#98${55+parseInt(n)}`;
+
+const getD6 = (n) => 
+  {
+    return `<img src="data:image/png;base64,${dice[n-1]}" style="margin-left: 1px; margin-bottom: 4px;"/>`
+  };
+
+const getRandomTo = (max) => Math.floor(Math.random() * max) + 1;
 
 const Scoreboard = (
   {
     matchName, 
+    pinnings,
     pactiveBatsmen,
     pactiveBowlers,
     pteams,  
@@ -18,27 +46,33 @@ const Scoreboard = (
     pevents
   }) => {
   
-  const nullPlayer = {Id : ""};
 
+  const [innings, setInnings] = useState(pinnings);
   const [activeBatsmen, setActiveBatsmen] = useState(pactiveBatsmen);
   const [activeBowlers, setActiveBowlers] = useState(pactiveBowlers);
   const [teams, setTeams] = useState(pteams);
   const [events, setEvents] = useState(pevents);
-  const [currentEvent, setCurrentEvent] = useState(pevents[0]);
   const [isLoading, setLoading] = useState(true);
   const [batQuantity, setBatQuantity] = useState(3);
-  const [selectedBatsman1, setSelectedBatsman1] = useState(pevents[0].Batter1Id ? getById(pactiveBatsmen, pevents[0].Batter1Id) : nullPlayer);
-  const [selectedBatsman2, setSelectedBatsman2] = useState(pevents[0].Batter2Id ? getById(pactiveBatsmen, pevents[0].Batter2Id) : nullPlayer);
-  const [selectedBowler, setSelectedBowler] = useState(nullPlayer);
+
+
+  const [activeInnings, setActiveInnings] = useState(pinnings[pinnings.length-1]);
+  const [activeSession, setActiveSession] = useState();
+  const [activeSpell, setActiveSpell] = useState();
+
+  const [selectedBatsman1, setSelectedBatsman1] = useState({Id:""});
+  const [selectedBatsman2, setSelectedBatsman2] = useState({Id:""});
+  const [committedBatsman1, setCommittedBatsman1] = useState({Id:""});
+  const [committedBatsman2, setCommittedBatsman2] = useState({Id:""});
+  const [selectedBowler, setSelectedBowler] = useState({Id:""});
   const [selectedField, setSelectedField] = useState({Id:"2"});
-  
+
   const tableRef = useRef(null);
   const tabulatorRef = useRef(null);
 
 useEffect(() => {
         const table = new Tabulator(tableRef.current, {
           data: pevents,
-          initialFilter: [{field:'actions', type:"!=", value: null}],
           layout:"fitDataStretch",
           columns: [
 
@@ -58,20 +92,58 @@ useEffect(() => {
         return () => table.destroy();
     }, []);
 
-    const rollSpell = () => {
-      rollSpellAsync().then((events) => 
-        {
-          console.log("Adding to tabulator:");
-          console.log(events);
-          tabulatorRef.current.addData(events, true);
-          setCurrentEvent(events[0])
-          setSelectedBatsman1(getById(pactiveBatsmen, events[0].Batter1Id))
-          setSelectedBatsman2(getById(pactiveBatsmen, events[0].Batter2Id))
-          setSelectedBowler(nullPlayer)
-        })
+  const handleChangeBatsman1 = (event) => {  
+    const newId = event.target.value;
+    const bts = activeBatsmen.filter((b) => b.Id==newId)[0];
+    setSelectedBatsman1(bts);
+  };
+
+  const handleChangeBatsman2 = (event) => {
+    const newId = event.target.value;
+    const bts = activeBatsmen.filter((b) => b.Id==newId)[0];
+    setSelectedBatsman2(bts);
+  };
+
+  const handleChangeBowler = (event) => {
+    const newId = event.target.value;
+    const bts = activeBowlers.filter((b) => b.Id==newId)[0];
+    setSelectedBowler(bts);
+  };
+
+  const handleBatQuantityChange = (event) => {
+    console.log(event.target.value);
+  };
+
+  const handleChangeField = (event) => {
+    const newId = event.target.value;
+    const bts = lookups.Fields.filter((b) => b.Id==newId)[0];
+    console.log(bts);
+    setSelectedField(bts);
+  };
+
+  const setInitialData = () => {
+    const pactiveSession = getLast(activeInnings.Sessions);
+    const pactiveSpell = getLast(pactiveSession.Spells);
+    setActiveSession(pactiveSession)
+    setActiveSpell(pactiveSpell)
+    if(pactiveSpell?.Batter1Id)  
+    {
+      const setb1 = activeBatsmen.filter((b) => b.Id==pactiveSpell.Batter1Id)[0];
+      setSelectedBatsman1(setb1);
+      setCommittedBatsman1(setb1);
     }
-  const rollSpellAsync = async () => {
-    await fetch(`${apiUrl}/multi/spells/${currentEvent.SpellId}`, {method: 'PUT',body: `BowlerId=${selectedBowler.Id},Batter1Id=${selectedBatsman1.Id},Batter2Id=${selectedBatsman2.Id}, Field=${selectedField.Id}`});
+    if(pactiveSpell?.Batter2Id)
+    {
+      const setb2 = activeBatsmen.filter((b) => b.Id==pactiveSpell.Batter2Id)[0];
+        setSelectedBatsman2(setb2);
+        setCommittedBatsman2(setb2)
+    }
+    if(pactiveSpell?.BowlerId)  setSelectedBowler(activeBowlers.filter((b) => b.Id==pactiveSpell.BowlerId)[0]);
+    setLoading(false)
+  }
+
+  const rollSpell = () => {
+    fetch(`${apiUrl}/multi/spells/${activeSpell.Id}`, {method: 'PUT',body: `BowlerId=${selectedBowler.Id},Batter1Id=${selectedBatsman1.Id},Batter2Id=${selectedBatsman2.Id}, Field=${selectedField.Id}`});
     const fieldDice = getRandomTo(10);
     const batDice = getRandomTo(10);
     const difference = fieldDice-batDice;
@@ -82,40 +154,38 @@ useEffect(() => {
       const bts = lookups.Fields.filter((b) => b.Name=="Normal")[0];
       setSelectedField(bts);
     }    
-    var actionResult = await rollBattingDice(fieldDice, batDice);
-    if(selectedField.Id==3 && !actionResult.Out) 
+    setCommittedBatsman1(selectedBatsman1)
+    setCommittedBatsman2(selectedBatsman2);
+    var out = rollBattingDice(fieldDice, batDice);
+    if(selectedField.Id==3 && !out) 
     {
       console.log("second roll!")
-      actionResult = await rollBattingDice(getRandomTo(10), getRandomTo(10));
+      out = rollBattingDice(getRandomTo(10), getRandomTo(10));
     }
     const newSpell = {
       Batter1Id: selectedBatsman2.Id,
-      Batter2Id: actionResult.Out ? null : selectedBatsman1.Id,
+      Batter2Id: out ? null : selectedBatsman1.Id,
     };
-    const newSpellResponse = await fetch(`${apiUrl}/newspell/${currentEvent.SessionId}`, {method: 'POST',body: JSON.stringify(newSpell)});
-    const newSpellData = await newSpellResponse.json();
-    return [actionResult,newSpellData]
+    fetch(`${apiUrl}/newspell/${activeSession.Id}`, {method: 'POST',body: JSON.stringify(newSpell)})
   }
 
 
-  const rollBattingDice = async (fieldDice, batDice) => {
+  const rollBattingDice = (fieldDice, batDice) => {
     console.log(`Field:${fieldDice} Bat:${batDice}`);
     const diceResults = Array.from({ length: batQuantity }, (_, i) => getRandomTo(6));
     console.log(diceResults);
     const runs = determineRuns(diceResults);
     console.log(`Runs: ${runs}`);
     const out = determineOut(fieldDice, batDice);
-    const insertAction = {
+    const newAction = {
       FieldDice: fieldDice,
       BatDice: batDice,
       Dice: parseInt(diceResults.join('')),
       Runs: runs,
       Out: out ||  null
     }
-    const newActionResponse = await fetch(`${apiUrl}/newaction/${currentEvent.SpellId}`, {method: 'POST',body: JSON.stringify(insertAction)});
-    const newAction = await newActionResponse.json();
-    newAction.Out = out;
-    return await newAction;
+    fetch(`${apiUrl}/newaction/${activeSpell.Id}`, {method: 'POST',body: JSON.stringify(newAction)})
+    return out;
   }
 
   const determineOut = (fieldDice, batDice) => 
@@ -139,23 +209,25 @@ useEffect(() => {
     const baseRating=selectedBowler.Bowl;
     if (selectedBatsman1.DisplayValue.includes("x") || batQuantity==3) return baseRating;
     if  (batQuantity==2) return baseRating+1;
-    return baseRating-(batQuantity-3)*2;
+    if  (batQuantity==4) return baseRating-2;
+    if  (batQuantity==5) return baseRating-4;
+    if  (batQuantity==6) return baseRating-6;
   }
 
   const determineRuns = (diceResults) => {
     diceResults = diceResults.filter((d)=>d!=2);
-    if (selectedField.Id==1)  diceResults.filter((d)=>d!==3);
+    if (selectedField.Id==1)  diceResults.filter((d)=>d!=3);
     return diceResults.reduce((t, d) => t + d, 0);
   }
 
 
-
-  return (
+  return ( isLoading ? setInitialData() :
     <div className="container-fluid bg-light min-vh-100 d-flex flex-column align-items-center pt-4">       
       <div className="mb-3 w-100">
+  
         <div className="d-flex justify-content-between align-items-center">
           <div className="d-flex flex-column flex-grow-1">
-            <div className="border rounded p-1"><span className="d-block fw-bold w-100">{matchName}</span></div>
+            <div className="border rounded p-1"><span className="fw-bold d-block w-100">{matchName}</span></div>
             <div className="border rounded p-1"><span className="d-block">{teams[0].Name}</span></div>
             <div className="border rounded p-1"><span className="d-block">{teams[1].Name}</span></div>
           </div>
@@ -193,10 +265,15 @@ useEffect(() => {
             </div>
 
             <div className="d-flex flex-column flex-grow-1">    
-              <select  className="form-select selectpicker" value={selectedBatsman1.Id} onChange={(event) => handleChangeById(event, activeBatsmen, setSelectedBatsman1)} disabled={currentEvent?.Batter1Id}>
-                <option value="" disabled >Select batsman</option>
-                {activeBatsmen.filter((b)=>b.Id !== selectedBatsman2.Id && !b.Out).map((b) => (<option key={b.Id} value={b.Id}>{b.Name} {b.Attributes} {b.DisplayValue}</option>))}
-              </select>              
+              <select  className="form-select selectpicker" value={selectedBatsman1.Id} onChange={handleChangeBatsman1} disabled={committedBatsman1?.Id ? true : null}>
+                <option value="" disabled >
+                Select batsman
+              </option>
+              {activeBatsmen.filter((b)=>b.Id !== selectedBatsman2.Id && !b.Out).map((b) => (
+                <option key={b.Id} value={b.Id}>{b.Name} {b.Attributes} {b.DisplayValue}</option>
+              ))}
+          </select> 
+              
             </div>
             
             <div className="d-flex flex-column flex-shrink-0">      
@@ -204,29 +281,43 @@ useEffect(() => {
             </div>
 
             <div className="d-flex flex-column flex-grow-1">  
-              <select  className="form-select selectpicker" value={selectedBatsman2.Id} onChange={(event) => handleChangeById(event, activeBatsmen, setSelectedBatsman2)} disabled={currentEvent?.Batter2Id}>
-                <option value="" disabled >Select batsman</option>
-                {activeBatsmen.filter((b)=>b.Id !== selectedBatsman1.Id && !b.Out).map((b) => (<option key={b.Id} value={b.Id}>{b.Name} {b.Attributes} {b.DisplayValue}</option>))}
-              </select>
+              <select  className="form-select selectpicker" value={selectedBatsman2.Id} onChange={handleChangeBatsman2} disabled={committedBatsman2?.Id ? true : null}>
+                <option value="" disabled >
+                Select batsman
+              </option>
+              {activeBatsmen.filter((b)=>b.Id !== selectedBatsman1.Id && !b.Out).map((b) => (
+                <option key={b.Id} value={b.Id}>{b.Name} {b.Attributes} {b.DisplayValue}</option>
+              ))}
+          </select>
+              
+
             </div>
- 
+
+  
         </div>
 
         <div className="d-flex justify-content-between align-items-center">
           <div className="d-flex flex-column flex-grow-1">      
             <div className="border rounded p-1"><span className="fw-bold d-block w-100">Bowler</span></div>
-            <select  className="form-select selectpicker" value={selectedBowler.Id} onChange={(event) => handleChangeById(event, activeBowlers, setSelectedBowler)}>
-              <option value="" disabled >Select bowler</option>
-              {activeBowlers.map((b) => (<option key={b.Id} value={b.Id}>{b.Name} {b.Attributes} {b.DisplayValue}</option>))}
-            </select>
+            <select  className="form-select selectpicker" value={selectedBowler.Id} onChange={handleChangeBowler} disabled={activeSpell.FieldDice && activeSpell.BatDice ? true : null}>
+                <option value="" disabled >
+                Select bowler
+              </option>
+              {activeBowlers.map((b) => (
+                <option key={b.Id} value={b.Id}>{b.Name} {b.Attributes} {b.DisplayValue}</option>
+              ))}
+          </select>
           </div>
 
           <div className="d-flex flex-column flex-shrink-0">      
               <div className="border rounded p-1"><span className="fw-bold d-block w-100">Field</span></div>
-                <div className="d-flex">               
+                <div className="d-flex">
+                 
                   <span className="d-block">
-                    <select  className="form-select selectpicker" value={selectedField.Id} onChange={(event) => handleChangeById(event, lookups.Fields, setSelectedField)}>
-                        {lookups.Fields.map((f) => (<option key={f.Id} value={f.Id}>{f.Name}</option>))}
+                    <select  className="form-select selectpicker" value={selectedField.Id} onChange={handleChangeField}>
+                        {lookups.Fields.map((f) => (
+                          <option key={f.Id} value={f.Id}>{f.Name}</option>
+                        ))}
                     </select>
                   </span>
                 </div>
