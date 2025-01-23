@@ -45,7 +45,6 @@ useEffect(() => {
             { title: 'Dice', field: 'actions', minWidth: 100,  widthGrow: 1, formatter: function(cell, formatterParams, onRendered){
               const value = cell.getValue();
               if (!value) return "";
-              console.log(value);
               const actionsarr = JSON.parse(value);         
               return `<div class="d-flex flex-column">${actionsarr.map((actions) => `<div class="d-flex flex-row mb-1"><div class="bg-danger rounded d-inline-block" style="width: 20px; margin-right:1px;"><span class="d-block fw-bold text-white text-center" style="margin-right: 1px;">${actions.FieldDice}</span></div><div class="bg-success rounded d-inline-block" style="width: 20px;"><span class="d-block fw-bold text-white text-center">${actions.BatDice}</span></div><div class="d-inline-block">${actions.Dice.toString().split('').map((d) => getD6(parseInt(d))).join('')}</div></div>`).join('')}</div>`
             }}
@@ -58,8 +57,12 @@ useEffect(() => {
     const rollSpell = () => {
       rollSpellAsync().then((events) => 
         {
-          console.log("Adding to tabulator:");
-          console.log(events);
+          const activeTeamIndex  = teams.findIndex((t) => t.IsBatting);
+          const activeTeam = teams[activeTeamIndex];
+          const propName = [1,3].includes(events[0].InningsIndex) ? "Innings1Score" : "Innings2Score";
+          activeTeam[propName] += events[1].Runs;
+          teams[activeTeamIndex] = activeTeam;
+          setTeams(teams);
           tabulatorRef.current.addData(events, true);
           setCurrentEvent(events[0])
           setSelectedBatsman1(getById(pactiveBatsmen, events[0].Batter1Id))
@@ -75,17 +78,14 @@ useEffect(() => {
     const fieldDice = getRandomTo(10);
     const batDice = getRandomTo(10);
     const difference = fieldDice-batDice;
-    console.log(`Selected Field:${selectedField.Name} ${selectedField.Id}`);
     if(difference>1 || difference<-1)
     {
-      console.log("Setting field to normal");
       const bts = lookups.Fields.filter((b) => b.Name==="Normal")[0];
       setSelectedField(bts);
     }    
     var actionResult = await rollBattingDice(fieldDice, batDice);
     if(selectedField.Id===3 && !actionResult.Out) 
     {
-      console.log("second roll!")
       actionResult = await rollBattingDice(getRandomTo(10), getRandomTo(10));
     }
     const newSpell = {
@@ -99,11 +99,8 @@ useEffect(() => {
 
 
   const rollBattingDice = async (fieldDice, batDice) => {
-    console.log(`Field:${fieldDice} Bat:${batDice}`);
     const diceResults = Array.from({ length: batQuantity }, (_, i) => getRandomTo(6));
-    console.log(diceResults);
     const runs = determineRuns(diceResults);
-    console.log(`Runs: ${runs}`);
     const out = determineOut(fieldDice, batDice);
     const insertAction = {
       FieldDice: fieldDice,
@@ -114,7 +111,7 @@ useEffect(() => {
     }
     const newActionResponse = await fetch(`${apiUrl}/newaction/${currentEvent.SpellId}`, {method: 'POST',body: JSON.stringify(insertAction)});
     const newAction = await newActionResponse.json();
-    newAction.Out = lookups.Outs[out-1];
+    newAction.Out = out ? lookups.Outs[out-1].Label : null;
     return await newAction;
   }
 
@@ -122,14 +119,11 @@ useEffect(() => {
   {
     const modifiedBowlerRating = determineBowlerModifiedRating();
     const isAppeal = fieldDice > modifiedBowlerRating;
-    console.log(`Modified Bowler rating: ${modifiedBowlerRating}`);
     if (isAppeal)
     {
-      console.log(`Appeal! (${fieldDice} > ${modifiedBowlerRating})`);
       const isOut = batDice > selectedBatsman1.Bat;
       if (isOut) 
       { 
-        console.log(`Out! (${batDice} > ${selectedBatsman1.Bat})`);
         return getRandomTo(10);
       }  
     }
