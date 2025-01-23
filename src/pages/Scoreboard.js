@@ -40,9 +40,9 @@ useEffect(() => {
           layout:"fitColumns",
           columns: [
             { title: 'Match Spells', field: 'Description', minWidth: 200, widthGrow: 1},   
-            { title: '', field: 'Runs', width: 50},  
-            { title: '', field: 'Out', width: 80},  
-            { title: '', field: 'actions', minWidth: 100,  widthGrow: 1, formatter: function(cell, formatterParams, onRendered){
+            { title: 'Runs', field: 'Runs', width: 70},  
+            { title: 'Out', field: 'Out', width: 80},  
+            { title: 'Dice', field: 'actions', minWidth: 100,  widthGrow: 1, formatter: function(cell, formatterParams, onRendered){
               const value = cell.getValue();
               if (!value) return "";
               console.log(value);
