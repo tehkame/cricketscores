@@ -16,7 +16,6 @@ const TeamList = () => {
   const tabulatorRef = useRef(null);
 
   const [tableData, setTableData] = useState(null);
-  const [hasLoaded, setHasLoaded] = useState(false);
 
     useEffect(() => {
       fetch(`${apiUrl}/views/teamlist`)
@@ -57,7 +56,6 @@ const TeamList = () => {
             .catch((error) => console.error('Error updating data', error));
         });
         tabulatorRef.current = table;
-        setHasLoaded(true);
         return () => table.destroy();      
     }, [tableData, navigate]);  
 

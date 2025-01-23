@@ -57,12 +57,11 @@ useEffect(() => {
     const rollSpell = () => {
       rollSpellAsync().then((events) => 
         {
-          const activeTeamIndex  = teams.findIndex((t) => t.IsBatting);
-          const activeTeam = teams[activeTeamIndex];
+          const teamsData = teams;
+          const activeTeamIndex  = teamsData.findIndex((t) => t.IsBatting);
           const propName = [1,3].includes(events[0].InningsIndex) ? "Innings1Score" : "Innings2Score";
-          activeTeam[propName] += events[1].Runs;
-          teams[activeTeamIndex] = activeTeam;
-          setTeams(teams);
+          teamsData[activeTeamIndex][propName] += events[1].Runs;
+          setTeams(teamsData);
           tabulatorRef.current.addData(events, true);
           setCurrentEvent(events[0])
           setSelectedBatsman1(getById(pactiveBatsmen, events[0].Batter1Id))
