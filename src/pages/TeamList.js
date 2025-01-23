@@ -27,7 +27,7 @@ const TeamList = () => {
     }, []);
 
   useEffect(() => {
-        if(!tableData || hasLoaded) return;
+        if(!tableData) return;
         const table = new Tabulator(tableRef.current, {
           data: tableData,
           columns: [
@@ -59,7 +59,7 @@ const TeamList = () => {
         tabulatorRef.current = table;
         setHasLoaded(true);
         return () => table.destroy();      
-    }, [tableData, navigate, hasLoaded]);  
+    }, [tableData, navigate]);  
 
     const addRecord = () => {
       if (tabulatorRef.current) {

@@ -38,12 +38,11 @@ useEffect(() => {
         const table = new Tabulator(tableRef.current, {
           data: pevents,
           initialFilter: [{field:'actions', type:"!=", value: null}],
-          layout:"fitDataStretch",
+          layout:"fitColumns",
           columns: [
-
             { title: 'Match Spells', field: 'Description', minWidth: 200, widthGrow: 1},   
-            { title: '', field: 'Runs'},  
-            { title: '', field: 'Out'},  
+            { title: '', field: 'Runs', width: 50},  
+            { title: '', field: 'Out', width: 80},  
             { title: '', field: 'actions', minWidth: 100,  widthGrow: 1, formatter: function(cell, formatterParams, onRendered){
               const value = cell.getValue();
               if (!value) return "";
@@ -242,8 +241,10 @@ useEffect(() => {
           </div>
         </div>
 
-      <div>
+      <div className="d-flex justify-content-between align-items-center">
+      <div className="d-flex flex-column flex-grow-1"> 
         <div ref={tableRef}></div>
+        </div>
       </div>
 
     </div>
