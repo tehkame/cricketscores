@@ -8,15 +8,15 @@ Tabulator.registerModule([EditModule, FormatModule, PopupModule]);
 
 const apiUrl = 'https://csapi-b6cvdxergbf9h5e7.australiasoutheast-01.azurewebsites.net';
 
-const navigate = useNavigate();
 
 const TeamList = () => {
 
-
+  const navigate = useNavigate();
   const tableRef = useRef(null);
   const tabulatorRef = useRef(null);
 
   const [tableData, setTableData] = useState(null);
+  const [hasLoaded, setHasLoaded] = useState(false);
 
     useEffect(() => {
       fetch(`${apiUrl}/views/teamlist`)
@@ -27,7 +27,7 @@ const TeamList = () => {
     }, []);
 
   useEffect(() => {
-        if(!tableData) return;
+        if(!tableData || hasLoaded) return;
         const table = new Tabulator(tableRef.current, {
           data: tableData,
           columns: [
@@ -57,8 +57,9 @@ const TeamList = () => {
             .catch((error) => console.error('Error updating data', error));
         });
         tabulatorRef.current = table;
+        setHasLoaded(true);
         return () => table.destroy();      
-    }, [tableData]);  
+    }, [tableData, navigate, hasLoaded]);  
 
     const addRecord = () => {
       if (tabulatorRef.current) {
