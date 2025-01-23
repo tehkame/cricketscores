@@ -35,7 +35,7 @@ function NewGame() {
 
   const handleBattingDropdownChange = (event) => {
     const newId = event.target.value;
-    const bts = options.filter((b) => b.Id==newId)[0];
+    const bts = options.filter((b) => b.Id===parseInt(newId))[0];
     setSelectedBatting(bts);
     if(bts.Name && selectedBowling.Name) 
       setGameName(`${bts.Name} V ${selectedBowling.Name}`);

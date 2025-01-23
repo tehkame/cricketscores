@@ -9,7 +9,7 @@ export function getRandomTo(max) {
 }
 
 export function getById(source, id) {
-    const p =  source.filter((b) => b.Id==id)[0];
+    const p =  source.filter((b) => b.Id===id)[0];
     console.log("Found player")
     console.log(p)
     return p;

@@ -109,7 +109,7 @@ const ManageTeam = () => {
           teamTable.destroy();
           poolTable.destroy();
         };
-},[pageData]);
+},[pageData, teamId]);
 
   return  <div className="container-fluid bg-light min-vh-100 d-flex flex-column align-items-center pt-4">
     {pageData ? 

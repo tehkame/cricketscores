@@ -10,7 +10,6 @@ const apiUrl = 'https://csapi-b6cvdxergbf9h5e7.australiasoutheast-01.azurewebsit
 
 
 const TeamList = () => {
-  const navigate = useNavigate();
 
   const tableRef = useRef(null);
   const tabulatorRef = useRef(null);
@@ -37,7 +36,7 @@ const TeamList = () => {
                 button.innerHTML = '✎';
                 button.addEventListener('click', () => {
                   const teamId = cell.getRow().getData().Id;
-                  navigate(`/team/${teamId}`);
+                  useNavigate(`/team/${teamId}`);
                 });
                 return button;
               }

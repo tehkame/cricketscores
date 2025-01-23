@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Tabulator, FormatModule } from 'tabulator-tables';
 import { useParams } from 'react-router-dom';
 import 'tabulator-tables/dist/css/tabulator_bootstrap4.min.css';
@@ -20,7 +20,7 @@ const Match = () => {
           console.log(responseJson)
           setMatchData(responseJson)
         });
-    }, []);
+    }, [matchId]);
 
      
 

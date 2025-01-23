@@ -23,9 +23,8 @@ const Scoreboard = (
   const [activeBatsmen, setActiveBatsmen] = useState(pactiveBatsmen);
   const [activeBowlers, setActiveBowlers] = useState(pactiveBowlers);
   const [teams, setTeams] = useState(pteams);
-  const [events, setEvents] = useState(pevents);
+  //const [events, setEvents] = useState(pevents);
   const [currentEvent, setCurrentEvent] = useState(pevents[0]);
-  const [isLoading, setLoading] = useState(true);
   const [batQuantity, setBatQuantity] = useState(3);
   const [selectedBatsman1, setSelectedBatsman1] = useState(pevents[0].Batter1Id ? getById(pactiveBatsmen, pevents[0].Batter1Id) : nullPlayer);
   const [selectedBatsman2, setSelectedBatsman2] = useState(pevents[0].Batter2Id ? getById(pactiveBatsmen, pevents[0].Batter2Id) : nullPlayer);
@@ -45,7 +44,7 @@ useEffect(() => {
             { title: 'Match Spells', field: 'Description', minWidth: 200, widthGrow: 1},   
             { title: '', field: 'Runs'},  
             { title: '', field: 'Out'},  
-            { title: '', field: 'actions', minWidth: 100,  minWidth: 50, widthGrow: 1, formatter: function(cell, formatterParams, onRendered){
+            { title: '', field: 'actions', minWidth: 100,  widthGrow: 1, formatter: function(cell, formatterParams, onRendered){
               const value = cell.getValue();
               if (!value) return "";
               console.log(value);
@@ -56,7 +55,7 @@ useEffect(() => {
         });
         tabulatorRef.current = table;
         return () => table.destroy();
-    }, []);
+    }, [pevents]);
 
     const rollSpell = () => {
       rollSpellAsync().then((events) => 
@@ -67,6 +66,9 @@ useEffect(() => {
           setCurrentEvent(events[0])
           setSelectedBatsman1(getById(pactiveBatsmen, events[0].Batter1Id))
           setSelectedBatsman2(getById(pactiveBatsmen, events[0].Batter2Id))
+          setActiveBatsmen(activeBatsmen);
+          setActiveBowlers(activeBowlers);
+          setTeams(teams);
           setSelectedBowler(nullPlayer)
         })
     }
@@ -79,11 +81,11 @@ useEffect(() => {
     if(difference>1 || difference<-1)
     {
       console.log("Setting field to normal");
-      const bts = lookups.Fields.filter((b) => b.Name=="Normal")[0];
+      const bts = lookups.Fields.filter((b) => b.Name==="Normal")[0];
       setSelectedField(bts);
     }    
     var actionResult = await rollBattingDice(fieldDice, batDice);
-    if(selectedField.Id==3 && !actionResult.Out) 
+    if(selectedField.Id===3 && !actionResult.Out) 
     {
       console.log("second roll!")
       actionResult = await rollBattingDice(getRandomTo(10), getRandomTo(10));
@@ -137,13 +139,13 @@ useEffect(() => {
 
   const determineBowlerModifiedRating = () => {
     const baseRating=selectedBowler.Bowl;
-    if (selectedBatsman1.DisplayValue.includes("x") || batQuantity==3) return baseRating;
+    if (selectedBatsman1.DisplayValue.includes("x") || batQuantity===3) return baseRating;
     if  (batQuantity==2) return baseRating+1;
     return baseRating-(batQuantity-3)*2;
   }
 
   const determineRuns = (diceResults) => {
-    diceResults = diceResults.filter((d)=>d!=2);
+    diceResults = diceResults.filter((d)=>d!==2);
     if (selectedField.Id==1)  diceResults.filter((d)=>d!==3);
     return diceResults.reduce((t, d) => t + d, 0);
   }
