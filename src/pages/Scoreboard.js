@@ -140,13 +140,13 @@ useEffect(() => {
   const determineBowlerModifiedRating = () => {
     const baseRating=selectedBowler.Bowl;
     if (selectedBatsman1.DisplayValue.includes("x") || batQuantity===3) return baseRating;
-    if  (batQuantity==2) return baseRating+1;
+    if  (batQuantity===2) return baseRating+1;
     return baseRating-(batQuantity-3)*2;
   }
 
   const determineRuns = (diceResults) => {
     diceResults = diceResults.filter((d)=>d!==2);
-    if (selectedField.Id==1)  diceResults.filter((d)=>d!==3);
+    if (selectedField.Id===1)  diceResults.filter((d)=>d!==3);
     return diceResults.reduce((t, d) => t + d, 0);
   }
 
