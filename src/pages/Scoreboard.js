@@ -37,12 +37,12 @@ useEffect(() => {
         const table = new Tabulator(tableRef.current, {
           data: pevents,
           initialFilter: [{field:'actions', type:"!=", value: null}],
-          layout:"fitColumns",
+          layout:"fitDataStretch",
           columns: [
-            { title: 'Match Spells', field: 'Description', minWidth: 200, widthGrow: 1},   
+            { title: 'Match Spells', field: 'Description'},   
             { title: 'Runs', field: 'Runs', width: 70},  
             { title: 'Out', field: 'Out', width: 80},  
-            { title: 'Dice', field: 'actions', minWidth: 100,  widthGrow: 1, formatter: function(cell, formatterParams, onRendered){
+            { title: 'Dice', field: 'actions', formatter: function(cell, formatterParams, onRendered){
               const value = cell.getValue();
               if (!value) return "";
               const actionsarr = JSON.parse(value);         
@@ -60,7 +60,10 @@ useEffect(() => {
           const teamsData = teams;
           const activeTeamIndex  = teamsData.findIndex((t) => t.IsBatting);
           const propName = [1,3].includes(events[0].InningsIndex) ? "Innings1Score" : "Innings2Score";
+          console.log(teamsData[activeTeamIndex]);
+          console.log(events);
           teamsData[activeTeamIndex][propName] += events[1].Runs;
+          console.log(teamsData[activeTeamIndex]);
           setTeams(teamsData);
           tabulatorRef.current.addData(events, true);
           setCurrentEvent(events[0])
